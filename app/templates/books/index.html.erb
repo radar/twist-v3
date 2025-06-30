@@ -1,0 +1,11 @@
+
+<% books.each do |book| %>
+  <div className="mb-4">
+    <h2>
+      <%= link_to routes.path(:book, permalink: book.permalink) do %>
+        <%= book.title %>
+      <% end %>
+    </h2>
+    <span className="text-gray-800"><%= book.blurb %></span>
+  </div>
+<% end %>

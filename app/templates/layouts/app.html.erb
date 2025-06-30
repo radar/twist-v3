@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twist</title>
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+</style>
+
+    <%= favicon_tag %>
+    <%= stylesheet_tag "app" %>
+  </head>
+  <body>
+    <div class="w-full md:w-2/3 px-4 md:px-0 mx-auto">
+      <menu class="my-4">
+        <%= link_to "/" do %>
+          <strong>Twist</strong>
+        <% end %>
+        &nbsp; | &nbsp;
+        "Signed in as..."
+      </menu>
+
+      <%= yield %>
+    </div>
+
+    <%= javascript_tag "app" %>
+  </body>
+</html>

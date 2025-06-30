@@ -1,0 +1,5 @@
+<div className="text-gray-600 mb-4">
+  <small>
+    <%= branch.name %>@<%= commit.sha.slice(0, 8) %> &middot; <%= time_ago_in_words(commit.created_at, only: :days) %> ago
+  </small>
+</div>

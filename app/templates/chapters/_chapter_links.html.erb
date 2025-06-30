@@ -1,0 +1,18 @@
+ <div>
+  <div class="flex">
+    <% if previous_chapter %>
+      <div>
+        <%= link_to chapter_path(book, previous_chapter) do %>
+          &laquo; <%= previous_chapter.title %>
+        <% end %>
+      </div>
+    <% end %>
+    <div class="ml-auto">
+      <% if next_chapter %>
+        <%= link_to chapter_path(book, next_chapter) do %>
+          <%= next_chapter.title %> &raquo;
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

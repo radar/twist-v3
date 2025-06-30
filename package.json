@@ -1,0 +1,13 @@
+{
+  "name": "twist",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.11",
+    "hanami-assets": "^2.2.1",
+    "tailwindcss": "^4.1.11"
+  },
+  "scripts": {
+    "build:css": "tailwindcss -i ./app/assets/css/tailwind.css -o ./public/assets/application.css"
+  }
+}
