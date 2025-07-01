@@ -22,7 +22,7 @@ module Twist
         end
 
         expose :elements do |chapter|
-          element_repo.by_chapter(chapter.id)
+          element_repo.by_chapter(chapter)
         end
 
         expose :previous_chapter do |commit, chapter|

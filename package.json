@@ -8,6 +8,6 @@
     "tailwindcss": "^4.1.11"
   },
   "scripts": {
-    "build:css": "tailwindcss -i ./app/assets/css/tailwind.css -o ./public/assets/application.css"
+    "build:css": "tailwindcss -i ./app/assets/css/tailwind.css -o ./app/assets/css/tailwind-compiled.css"
   }
 }

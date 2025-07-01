@@ -15,16 +15,8 @@
     <% elements.each do |element| %>
       <%= render "elements/element", element: element %>
     <% end %>
-    {elements &&
-      elements.map((element) => (
-        <Element
-          {...element}
-          bookPermalink={bookPermalink}
-          key={element.id}
-        />
-      ))}
 
     {renderFootnotes()}
-    {renderChapterLinks()}
+    <%= render "chapters/chapter_links", book: book, previous_chapter: previous_chapter, next_chapter: next_chapter  %>
   </div>
 </div>
