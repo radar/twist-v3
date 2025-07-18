@@ -10,7 +10,6 @@ module Twist
       include RoutingHelpers
       include CountingHelpers
       include NoteHelpers
-      include ViteHanami::TagHelpers
     end
   end
 end

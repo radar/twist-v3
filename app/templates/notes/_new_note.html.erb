@@ -1,0 +1,14 @@
+<%= form_for :note, create_note_path(element_id: element.id) do |f| %>
+  <div>
+    <%= f.label for: :text do %>
+      Leave a note (Markdown enabled)
+    <% end %>
+    <%= f.text_area :text, class: "w-full border border-gray-300 p-2 mb-2" %>
+  </div>
+
+  <input
+    type="submit"
+    class="btn btn-blue mb-2 mr-4"
+    value="Submit Note"
+  />
+<% end %>

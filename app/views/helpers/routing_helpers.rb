@@ -18,6 +18,15 @@ module Twist
             id: id
           )
         end
+
+        def create_note_path(element_id:)
+          routes.path(
+            :create_note,
+            book_permalink: book.permalink,
+            chapter_permalink: chapter.permalink,
+            element_id: element_id
+          )
+        end
       end
     end
   end

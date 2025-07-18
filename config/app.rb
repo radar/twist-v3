@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "hanami"
-require 'vite_hanami'
+require "default_timestamps"
 
 module Twist
   class App < Hanami::App

@@ -18,9 +18,13 @@
       <%= note_count(element.note_count) %>
     </h3>
 
-    <% notes.each do |note| %>
-      <%= render "notes/note", note: note %>
-    <% end %>
+    <%= render "notes/new_note", book: book, chapter: chapter, element: element %>
+
+    <div class="space-y-4">
+      <% notes.each do |note| %>
+        <%= render "notes/note", note: note %>
+      <% end %>
+    </div>
 
 
   </div>
