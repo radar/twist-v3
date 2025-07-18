@@ -9,6 +9,7 @@ gem "hanami-db", "~> 2.2"
 gem "hanami-router", "~> 2.2"
 gem "hanami-validations", "~> 2.2"
 gem "hanami-view", "~> 2.2"
+gem "vite_hanami"
 
 gem "dry-types", "~> 1.7"
 gem "dry-operation"
@@ -16,6 +17,7 @@ gem "puma"
 gem "rake"
 gem "pg"
 gem "dotiw"
+gem "redcarpet"
 
 group :development do
   gem "hanami-webconsole", "~> 2.2"

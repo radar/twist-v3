@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
+require 'default_timestamps'
+
 module Twist
   module Repos
     class BookRepo < Twist::DB::Repo
-      commands :create, use: :timestamps, plugins_options: { timestamps: { timestamps: %i(created_at updated_at) } }
+      commands :create, use: :default_timestamps
 
       def all
         books.to_a

@@ -7,6 +7,8 @@ module Twist
     get "/books/:permalink", to: "books.show", as: :book
 
     get "/books/:book_permalink/chapters/:permalink", to: "chapters.show", as: :chapter
+    get "/books/:book_permalink/chapters/:chapter_permalink/elements/:id", to: "elements.show", as: :element
     get "/chapters/:id", to: "chapters.show"
+    get "/elements/:id", to: "elements.show"
   end
 end

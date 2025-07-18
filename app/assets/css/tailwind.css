@@ -28,6 +28,10 @@ a {
   @apply text-blue-600 underline;
 }
 
+a.no-underline {
+  @apply no-underline;
+}
+
 pre {
   font-family: "Source Code Pro";
 }

@@ -7,13 +7,10 @@ module Twist
   module Views
     module Helpers
       include DOTIW::Methods
-      def book_path(book)
-        routes.path(:book, permalink: book.permalink)
-      end
-
-      def chapter_path(book, chapter)
-        routes.path(:chapter, book_permalink: book.permalink, permalink: chapter.permalink)
-      end
+      include RoutingHelpers
+      include CountingHelpers
+      include NoteHelpers
+      include ViteHanami::TagHelpers
     end
   end
 end

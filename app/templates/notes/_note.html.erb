@@ -1,0 +1,34 @@
+<div class="note">
+  <div class="flex">
+    <div class="w-34 pr-2">
+      <%= gravatar_for note.user.email %>
+    </div>
+    <div class="w-full">
+      <div class="row">
+        <div class="bg-gray-200 border-gray-300 border-b-0 border px-4 py-2 rounded-t-md">
+          <div>
+            <a>
+              <%= note.user.name %> left note <%= note.number %>
+            </a>
+          </div>
+          <div>
+            <small><%= time_ago_in_words note.created_at, highest_measure_only: true %> ago</small>
+          </div>
+        </div>
+      </div>
+      <div class="p-4 b-4 border border-gray-300">
+        <div class="markdown-body">
+          <%= render_markdown(note.text) %>
+        </div>
+        <div class="mt-4">
+          <span class="text-sm mr-2">Open / Close</span>
+          <span class="text-sm">Edit (only if this user)</span>
+        </div>
+      </div>
+
+      <% note.comments.each do |comment| %>
+        <%= render "comments/comment", comment: comment, user: comment.user %>
+      <% end %>
+    </div>
+  </div>
+</div>

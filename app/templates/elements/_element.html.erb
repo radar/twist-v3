@@ -1,9 +1,11 @@
 <div class="relative element">
   <span class="absolute note-button" id="note_button_<%= element.id %>">
-    <span class="<%= element.note_count == 0 ? 'no-notes' : '' %>">
-      <span class="note-count text-sm"><%= element.note_count %></span>
-      <i class="fa-regular fa-comment fa-xl text-blue-700"></i>
-    </span>
+    <a href='<%= element_path(book: book, chapter: chapter, id: element.id) %>' class="no-underline">
+      <span class="<%= element.note_count == 0 ? 'no-notes' : '' %>">
+        <span class="note-count text-sm"><%= element.note_count %></span>
+        <i class="fa-regular fa-comment fa-xl text-blue-700"></i>
+      </span>
+    </a>
   </span>
   <div id="<%= element.id %>">
     <%= raw element.content %>
