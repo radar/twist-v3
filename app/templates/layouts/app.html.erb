@@ -17,9 +17,17 @@
           <strong>Twist</strong>
         <% end %>
         &nbsp; | &nbsp;
-        "Signed in as..."
+        <% if user_signed_in? %>
+          Signed in as <%= current_user.name %>
+        <% else %>
+          <%= link_to "Login", routes.path(:login) %>
+        <% end %>
       </menu>
 
+      <div>
+        <%= flash[:success] %>
+        <%= flash[:error] %>
+      </div>
       <%= yield %>
     </div>
 

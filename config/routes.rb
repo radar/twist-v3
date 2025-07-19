@@ -11,5 +11,9 @@ module Twist
 
     post "/books/:book_permalink/chapters/:chapter_permalink/elements/:element_id/notes", to: "notes.create", as: :create_note
     post "/notes", to: "notes.create"
+
+    post "/login", to: "sessions.create", as: :login_post
+    get "/login/new", to: "sessions.new", as: :login
+    post "/sessions", to: "sessions.create"
   end
 end

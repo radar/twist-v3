@@ -5,6 +5,10 @@ module Twist
     module Notes
       class Create < Twist::Action
         include Deps["repos.note_repo"]
+        include Deps["repos.book_repo"]
+        include Deps["repos.book_note_repo"]
+
+        before :authenticate!
 
         params do
           required(:book_permalink).filled(:str?)
@@ -18,10 +22,13 @@ module Twist
         end
 
         def handle(request, response)
+          book = book_repo.find_by_permalink_with_latest_commit(request.params[:book_permalink])
+          note_count = book_note_repo.count_for_book(book.id)
           note_repo.create(
             request.params[:note].merge(
+              number: note_count + 1,
               element_id: request.params[:element_id],
-              user_id: 1,
+              user_id: response[:current_user].id,
             )
           )
 
