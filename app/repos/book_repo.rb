@@ -18,6 +18,13 @@ module Twist
       def find_by_permalink_with_latest_commit(permalink)
         books.combine(default_branch: :latest_commit).where(permalink: permalink).limit(1).one!
       end
+
+      def add_branch(book, data)
+        branches
+          .changeset(:create, data.merge(book_id: book.id))
+          .map(:add_timestamps)
+          .commit
+      end
     end
   end
 end

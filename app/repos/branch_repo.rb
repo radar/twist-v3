@@ -3,7 +3,14 @@
 module Twist
   module Repos
     class BranchRepo < Twist::DB::Repo
-      commands :create, use: :timestamps, plugins_options: { timestamps: { timestamps: %i(created_at updated_at) } }
+      commands :create, use: :default_timestamps
+
+      def find_by_book_id_and_name(book_id, name)
+        branches.where(
+          book_id: book_id,
+          name: name,
+        ).limit(1).one
+      end
     end
   end
 end

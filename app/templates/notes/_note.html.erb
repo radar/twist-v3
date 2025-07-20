@@ -12,7 +12,8 @@
             </a>
           </div>
           <div>
-            <small><%= time_ago_in_words note.created_at, highest_measure_only: true %> ago</small>
+            <small>
+              <%= distance_of_time_in_words Time.now, note.created_at.utc, highest_measure_only: true %> ago</small>
           </div>
         </div>
       </div>

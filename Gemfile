@@ -18,6 +18,10 @@ gem "pg"
 gem "dotiw"
 gem "redcarpet"
 gem "bcrypt"
+gem "sidekiq"
+gem "rugged"
+gem "asciidoctor"
+gem "babosa"
 
 group :development do
   gem "hanami-webconsole", "~> 2.2"

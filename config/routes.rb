@@ -15,5 +15,6 @@ module Twist
     post "/login", to: "sessions.create", as: :login_post
     get "/login/new", to: "sessions.new", as: :login
     post "/sessions", to: "sessions.create"
+    get "/books/receive", to: "books.receive"
   end
 end

@@ -5,8 +5,18 @@ module Twist
     class ChapterRepo < Twist::DB::Repo
       PARTS = %w(frontmatter mainmatter backmatter).freeze
 
+      commands :create, :update, use: :default_timestamps
+
       def by_commit(commit)
         chapters.by_commit(commit)
+      end
+
+      def mark_as_superseded(commit_id)
+        by_commit(commit_id).update(superseded: true)
+      end
+
+      def for_commit_and_part(commit, part)
+        current_for_commit(commit).where(part: part).to_a
       end
 
       def find_by_permalink_and_commit(permalink:, commit:)
@@ -55,6 +65,17 @@ module Twist
 
       def next_part(part)
         PARTS[PARTS.index(part) + 1]
+      end
+
+      def next_position(commit, part)
+        max_position = current_for_commit(commit).where(part: part).max(:position)
+        max_position ? max_position + 1 : 1
+      end
+
+      private
+
+      def current_for_commit(commit)
+        by_commit(commit).where(superseded: false)
       end
     end
   end
