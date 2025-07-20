@@ -5,6 +5,16 @@ module Twist
     class FootnoteRepo < Twist::DB::Repo
       commands :create, use: :default_timestamps
 
+      def by_identifier(identifier)
+        footnotes.where(identifier: identifier).first
+      end
+
+      def by_identifier_and_chapter(identifier, chapter)
+        footnotes
+          .where(identifier: identifier, chapter_id: chapter.id)
+          .first
+      end
+
       def find_or_create(fields)
         footnote = footnotes.where(
           commit_id: fields[:commit_id],

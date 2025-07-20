@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'pathname'
+require 'nokogiri'
 
 require_relative 'chapter'
 

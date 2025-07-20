@@ -7,6 +7,10 @@ module Twist
 
       commands :create, :update, use: :default_timestamps
 
+      def by_id(id)
+        chapters.by_pk(id).one
+      end
+
       def by_commit(commit)
         chapters.by_commit(commit)
       end
@@ -23,6 +27,7 @@ module Twist
         chapters
           .by_permalink(permalink)
           .by_commit(commit)
+          .where(superseded: false)
           .one!
       end
 

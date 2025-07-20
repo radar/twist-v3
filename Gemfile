@@ -22,6 +22,8 @@ gem "sidekiq"
 gem "rugged"
 gem "asciidoctor"
 gem "babosa"
+gem "nokogiri"
+gem "rouge"
 
 group :development do
   gem "hanami-webconsole", "~> 2.2"

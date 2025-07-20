@@ -1,5 +1,7 @@
 require 'sidekiq'
 require 'babosa'
+require 'nokogiri'
+require 'rouge'
 
 module Twist
   module Processors
@@ -214,7 +216,7 @@ module Twist
             caption = "Image missing: #{src}"
           end
 
-          image = image_repo.find_or_create_image(chapter.id, File.basename(image_path), image_path, caption)
+          image = image_repo.find_or_create_image(chapter.id, File.basename(image_path), image_path.to_s, caption)
 
           create_element(
             tag: "img",

@@ -366,11 +366,13 @@ DEPENDENCIES
   hanami-validations (~> 2.2)
   hanami-view (~> 2.2)
   hanami-webconsole (~> 2.2)
+  nokogiri
   pg
   puma
   rack-test
   rake
   redcarpet
+  rouge
   rugged
   sidekiq
 

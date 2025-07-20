@@ -5,6 +5,10 @@ module Twist
     class CommitRepo < Twist::DB::Repo
       commands :create, use: :default_timestamps
 
+      def by_id(id)
+        commits.by_pk(id).one
+      end
+
       def latest_for_branch(branch_id)
         by_branch(branch_id)
           .order { created_at.desc }
@@ -21,7 +25,7 @@ module Twist
 
         commit = commits.where(fields).limit(1).one
         if commit
-          chapter_repo.mark_as_superseded(commit.id)
+          chapter_repo.mark_as_superseded(commit)
           commit
         else
           create(fields)
