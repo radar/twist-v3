@@ -15,7 +15,7 @@ module Twist
 
         def chapters(permalink:)
           book = book(permalink: permalink)
-          chapter_repo.by_commit(book.default_branch.latest_commit)
+          chapter_repo.by_commit(book.default_branch.latest_commit).to_a.group_by(&:part)
         end
       end
     end

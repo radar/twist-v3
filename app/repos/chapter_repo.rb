@@ -12,7 +12,7 @@ module Twist
       end
 
       def by_commit(commit)
-        chapters.by_commit(commit)
+        chapters.by_commit(commit).where(superseded: false)
       end
 
       def mark_as_superseded(commit_id)

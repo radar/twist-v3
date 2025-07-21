@@ -5,6 +5,7 @@ module Twist
     root to: "books.index"
     get "/books", to: "books.index"
     get "/books/:permalink", to: "books.show", as: :book
+    post "/books/:permalink/receive", to: "books.receive"
 
     get "/books/:book_permalink/chapters/:permalink", to: "chapters.show", as: :chapter
     get "/books/:book_permalink/chapters/:chapter_permalink/elements/:id", to: "elements.show", as: :element
@@ -15,6 +16,6 @@ module Twist
     post "/login", to: "sessions.create", as: :login_post
     get "/login/new", to: "sessions.new", as: :login
     post "/sessions", to: "sessions.create"
-    get "/books/receive", to: "books.receive"
+
   end
 end

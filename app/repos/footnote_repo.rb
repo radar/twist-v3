@@ -15,6 +15,13 @@ module Twist
           .first
       end
 
+      def by_chapter_and_commit(chapter_id, commit_id)
+        footnotes
+          .where(chapter_id: chapter_id, commit_id: commit_id)
+          .order { number.asc }
+          .to_a
+      end
+
       def find_or_create(fields)
         footnote = footnotes.where(
           commit_id: fields[:commit_id],

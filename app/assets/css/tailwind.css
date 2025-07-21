@@ -160,7 +160,7 @@ textarea {
   @apply mb-4;
 }
 
-.chapter ol {
+.chapter .elements ol {
   @apply list-decimal list-inside;
 }
 

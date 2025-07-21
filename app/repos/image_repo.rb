@@ -37,6 +37,14 @@ module Twist
         image
       end
 
+      def update_image_data(image_id, image_data)
+        images.where(id: image_id).update(image_data: image_data)
+      end
+
+      def processed(image_id)
+        images.where(id: image_id).update(status: 'processed')
+      end
+
       def upload_image(image_id, image_path)
         ImageWorker.perform_async(image_id, image_path)
       end

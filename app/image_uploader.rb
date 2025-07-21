@@ -4,7 +4,7 @@ Shrine.plugin :model
 
 module Twist
   class ImageUploader < Shrine
-    if ENV['APP_ENV'] == "test" || ENV['APP_ENV'] == "development"
+    if Hanami.env?(:test) || Hanami.env?(:development)
       require 'shrine/storage/file_system'
       self.storages = {
         store: Shrine::Storage::FileSystem.new("public", prefix: "uploads/store"),

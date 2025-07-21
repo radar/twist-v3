@@ -1,8 +1,21 @@
 <div class="mt-3">
   <h1><%= book.title %></h1>
   <%= render "books/commit_info", branch: book.default_branch, commit: book.default_branch.latest_commit %>
+  <% if chapters["frontmatter"].any? %>
+    <h2>Frontmatter</h2>
+    <ol class='list-[lower-roman] list-inside'>
+      <% chapters["frontmatter"].each do |chapter| %>
+        <li>
+          <%= link_to chapter_path(book, chapter) do %>
+            <%= chapter.title %>
+          <% end %>
+        </li>
+      <% end %>
+    </ol>
+  <% end %>
+  <h2>Chapters</h2>
   <ol class='list-decimal list-inside'>
-    <% chapters.each do |chapter| %>
+    <% chapters["mainmatter"].each do |chapter| %>
       <li>
         <%= link_to chapter_path(book, chapter) do %>
           <%= chapter.title %>
@@ -10,5 +23,4 @@
       </li>
     <% end %>
   </ol>
-
 </div>

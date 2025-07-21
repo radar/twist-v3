@@ -11,12 +11,23 @@
       <%= render "books/commit_info", branch: commit.branch, commit: commit %>
     </header>
     <%= render "chapters/chapter_links", book: book, previous_chapter: previous_chapter, next_chapter: next_chapter  %>
-    <h2 class="mt-3"><%= chapter.position %>. <%= chapter.title %></h2>
-    <% elements.each do |element| %>
-      <%= render "elements/element", book: book, chapter: chapter, element: element %>
-    <% end %>
+    <h2 class="mt-3">
+      <%= chapter_header(chapter) %>
+    </h2>
+    <div class="elements">
+      <% elements.each do |element| %>
+        <%= render "elements/element", book: book, chapter: chapter, element: element %>
+      <% end %>
+    </div>
 
-    {renderFootnotes()}
+    <% if footnotes.any? %>
+      <div>
+        <h3>Footnotes</h3>
+        <% footnotes.each do |footnote| %>
+          <div><%= raw footnote.content %></div>
+        <% end %>
+      </div>
+    <% end %>
     <%= render "chapters/chapter_links", book: book, previous_chapter: previous_chapter, next_chapter: next_chapter  %>
   </div>
 </div>

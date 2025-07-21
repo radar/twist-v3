@@ -8,6 +8,7 @@ module Twist
         include Deps["repos.chapter_repo"]
         include Deps["repos.commit_repo"]
         include Deps["repos.element_repo"]
+        include Deps["repos.footnote_repo"]
 
         expose :book do |book_permalink:|
           book_repo.find_by_permalink_with_latest_commit(book_permalink)
@@ -31,6 +32,10 @@ module Twist
 
         expose :next_chapter do |commit, chapter|
           chapter_repo.next_chapter(commit, chapter)
+        end
+
+        expose :footnotes do |chapter, commit|
+          footnote_repo.by_chapter_and_commit(chapter.id, commit.id)
         end
       end
     end

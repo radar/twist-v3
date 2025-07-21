@@ -24,6 +24,8 @@ gem "asciidoctor"
 gem "babosa"
 gem "nokogiri"
 gem "rouge"
+gem "shrine"
+gem "aws-sdk-s3"
 
 group :development do
   gem "hanami-webconsole", "~> 2.2"

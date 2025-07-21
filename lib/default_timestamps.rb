@@ -6,7 +6,7 @@ end
 
 module DefaultTimestamps
   class InputWithTimestamp < WrappingInput
-    def [](value)
+    def [](value, *args)
       v = @input[value]
       now = Time.now.utc
 
