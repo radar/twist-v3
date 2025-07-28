@@ -4,32 +4,42 @@
       <%= gravatar_for note.user.email %>
     </div>
     <div class="w-full">
-      <div class="row">
-        <div class="bg-gray-200 border-gray-300 border-b-0 border px-4 py-2 rounded-t-md">
-          <div>
-            <a>
-              <%= note.user.name %> left note #<%= note.number %>
-            </a>
-          </div>
-          <div>
-            <small>
-              <%= distance_of_time_in_words Time.now, note.created_at.utc, highest_measure_only: true %> ago</small>
-          </div>
+      <div class="flex bg-gray-200 border-gray-300 border-b-0 border px-4 py-2 rounded-t-md">
+        <div>
+          <a>
+            <%= note.user.name %> left note #<%= note.number %>
+          </a>
+          &middot;
+          <small>
+            <%= distance_of_time_in_words Time.now, note.created_at.utc, highest_measure_only: true %> ago
+          </small>
         </div>
-      </div>
-      <div class="p-4 b-4 border border-gray-300">
-        <div class="markdown-body">
-          <%= render_markdown(note.text) %>
-        </div>
-        <div class="mt-4">
-          <span class="text-sm mr-2">Open / Close</span>
-          <span class="text-sm">Edit (only if this user)</span>
+        <div class="ml-auto">
+          <%= link_to "Edit", edit_note_path(note) %>
+          <span>
+            <% if note.open? %>
+              <%= form_for :note, close_note_path(note), method: :patch, class: "inline-block" do |f| %>
+                <%= f.submit "Close", class: "text-blue-600 underline cursor-pointer" %>
+              <% end %>
+            <% else %>
+              <%= form_for :note, open_note_path(note), method: :patch, class: "inline-block" do |f| %>
+                <%= f.submit "Re-open", class: "text-blue-600 underline cursor-pointer" %>
+              <% end %>
+            <% end %>
+          </span>
+
         </div>
       </div>
 
-      <% note.comments.each do |comment| %>
-        <%= render "comments/comment", comment: comment, user: comment.user %>
-      <% end %>
+      <div class="p-4 b-4 border border-gray-300">
+        <div class="markdown-body">
+          <%= note.text_markdown %>
+        </div>
+      </div>
     </div>
+
+    <% note.comments.each do |comment| %>
+      <%= render "comments/comment", comment: comment, user: comment.user %>
+    <% end %>
   </div>
 </div>

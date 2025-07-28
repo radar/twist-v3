@@ -13,5 +13,7 @@ module Twist
       expire_after: 60*60*24*365
     }
 
+    config.middleware.use Rack::Static, urls: ["/assets", "/uploads"], root: "public"
+
   end
 end

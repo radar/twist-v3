@@ -10,9 +10,10 @@
 
       <%= render "books/commit_info", branch: commit.branch, commit: commit %>
     </header>
+
     <%= render "chapters/chapter_links", book: book, previous_chapter: previous_chapter, next_chapter: next_chapter  %>
     <h2 class="mt-3">
-      <%= chapter_header(chapter) %>
+      <%= chapter.header %>
     </h2>
     <div class="elements">
       <% elements.each do |element| %>

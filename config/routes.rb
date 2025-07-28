@@ -10,12 +10,17 @@ module Twist
     get "/books/:book_permalink/chapters/:permalink", to: "chapters.show", as: :chapter
     get "/books/:book_permalink/chapters/:chapter_permalink/elements/:id", to: "elements.show", as: :element
 
-    post "/books/:book_permalink/chapters/:chapter_permalink/elements/:element_id/notes", to: "notes.create", as: :create_note
-    post "/notes", to: "notes.create"
+    note_prefix = "/books/:book_permalink/chapters/:chapter_permalink/elements/:element_id/notes"
+    post note_prefix, to: "notes.create", as: :create_note
+    patch "#{note_prefix}/:id/close", to: "notes.close", as: :close_note
+    patch "#{note_prefix}/:id/open", to: "notes.open", as: :open_note
+    patch "#{note_prefix}/:id", to: "notes.update", as: :update_note
+    get "#{note_prefix}/:id/edit", to: "notes.edit", as: :edit_note
 
     post "/login", to: "sessions.create", as: :login_post
     get "/login/new", to: "sessions.new", as: :login
     post "/sessions", to: "sessions.create"
-
+    get "/notes/:id/edit", to: "notes.edit"
+    patch "/notes/:id", to: "notes.update"
   end
 end

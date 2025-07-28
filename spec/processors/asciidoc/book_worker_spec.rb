@@ -69,13 +69,13 @@ module Twist
 
             commit = commit_repo.latest_for_branch(branch.id)
 
-            frontmatter_titles = chapter_repo.for_commit_and_part(commit.id, "frontmatter").map(&:title)
+            frontmatter_titles = chapter_repo.for_commit_and_part(commit, "frontmatter").map(&:title)
             expect(frontmatter_titles).to eq(["Preface", "Acknowledgements", "About this book"])
 
-            mainmatter_titles = chapter_repo.for_commit_and_part(commit.id, "mainmatter").map(&:title)
+            mainmatter_titles = chapter_repo.for_commit_and_part(commit, "mainmatter").map(&:title)
             expect(mainmatter_titles).to include("Ruby on Rails, the framework")
 
-            backmatter_titles = chapter_repo.for_commit_and_part(commit.id, "backmatter").map(&:title)
+            backmatter_titles = chapter_repo.for_commit_and_part(commit, "backmatter").map(&:title)
             expect(backmatter_titles).to eq(["Appendix A: Installation Guide", "Appendix B: Why Rails?"])
           end
         end

@@ -27,6 +27,22 @@ module Twist
             element_id: element_id
           )
         end
+
+        def close_note_path(note)
+          routes.path(:close_note, book_permalink:, chapter_permalink:, element_id:, id: note.id)
+        end
+
+        def open_note_path(note)
+          routes.path(:open_note, book_permalink:, chapter_permalink:, element_id:, id: note.id)
+        end
+
+        def edit_note_path(note)
+          routes.path(:edit_note, book_permalink:, chapter_permalink:, element_id:, id: note.id)
+        end
+
+        def update_note_path(note)
+          routes.path(:update_note, book_permalink:, chapter_permalink:, element_id:, id: note.id)
+        end
       end
     end
   end

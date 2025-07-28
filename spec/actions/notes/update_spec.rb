@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Twist::Actions::Books::Show do
+RSpec.describe Twist::Actions::Notes::Update do
   let(:params) { Hash[] }
 
   it "works" do

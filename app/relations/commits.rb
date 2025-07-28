@@ -14,7 +14,11 @@ module Twist
       end
 
       def latest_by_book_permalink(book_permalink:)
-        latest.combine(:branch).inner_join(:branches, id: commits[:branch_id]).inner_join(:books, permalink: book_permalink).one!
+        latest
+          .combine(:branch)
+          .inner_join(:books, permalink: book_permalink)
+          .inner_join(:branches, id: commits[:branch_id], book_id: books[:id])
+          .one!
       end
     end
   end

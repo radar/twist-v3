@@ -1,5 +1,3 @@
-
-
 <div class="flex flex-wrap lg:flex-no-wrap mx-16 md:mx-0">
   <div class="w-1/12"></div>
   <div class="w-full lg:w-3/4 flex-grow mr-4 chapter">
@@ -18,19 +16,6 @@
       <%= element.pretty_note_count %>
     </h3>
 
-    <%= render "notes/form", path: create_note_path(element_id: element.id) %>
-
-    <div class="space-y-4">
-      <% notes.each do |note| %>
-        <%= render "notes/note",
-          note: note,
-          book_permalink: book.permalink,
-          chapter_permalink: chapter.permalink,
-          element_id: element.id
-        %>
-      <% end %>
-    </div>
-
-
+    <%= render "notes/form", note: note, path: update_note_path(note) %>
   </div>
 </div>

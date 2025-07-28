@@ -5,8 +5,10 @@ module Twist
     module Books
       class Index < Twist::View
         include Deps["repos.book_repo"]
-        expose :books do
-          book_repo.all
+        expose :user, private: true
+
+        expose :books do |user|
+          book_repo.permitted_for_user(user)
         end
       end
     end

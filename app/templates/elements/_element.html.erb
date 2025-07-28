@@ -8,6 +8,10 @@
     </a>
   </span>
   <div id="<%= element.id %>">
-    <%= raw element.content %>
+    <% if element.tag == 'img' %>
+      <img src='<%= element.image.image_url %>' class='element-image'>
+    <% else %>
+      <%= raw element.content %>
+    <% end %>
   </div>
 </div>

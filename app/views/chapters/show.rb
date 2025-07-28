@@ -26,11 +26,11 @@ module Twist
           element_repo.by_chapter(chapter)
         end
 
-        expose :previous_chapter do |commit, chapter|
+        expose :previous_chapter, as: :chapter do |commit, chapter|
           chapter_repo.previous_chapter(commit, chapter)
         end
 
-        expose :next_chapter do |commit, chapter|
+        expose :next_chapter, as: :chapter do |commit, chapter|
           chapter_repo.next_chapter(commit, chapter)
         end
 

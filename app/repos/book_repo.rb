@@ -25,6 +25,18 @@ module Twist
           .map(:add_timestamps)
           .commit
       end
+
+      def permitted?(book:, user:)
+        permissions.where(book_id: book.id, user_id: user.id).exist?
+      end
+
+      def permitted_for_user(user)
+        books
+          .join(:permissions, book_id: :id)
+          .where(permissions[:user_id] => user.id)
+          .distinct
+          .to_a
+      end
     end
   end
 end

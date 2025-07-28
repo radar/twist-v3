@@ -8,8 +8,6 @@ module Twist
     module Helpers
       include DOTIW::Methods
       include RoutingHelpers
-      include ChapterHelpers
-      include CountingHelpers
       include NoteHelpers
     end
   end
