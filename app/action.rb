@@ -11,13 +11,12 @@ module Twist
     include Deps["repos.user_repo"]
 
     def authenticate!(request, response)
-      user = user_repo.find(request.session[:user_id])
-      if user
-        response[:current_user] = user
-      end
+      response[:current_user] = user_repo.find(request.session[:user_id])
     end
 
     def ensure_authenticated!(request, response)
+      puts "*" * 50
+      p request.session[:user_id]
       unless request.session[:user_id]
         request.flash[:error] = "You must be logged in to perform this action."
         response.redirect_to routes.path(:login)

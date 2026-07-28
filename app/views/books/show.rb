@@ -12,7 +12,10 @@ module Twist
         end
 
         expose :chapters do |book|
-          chapter_repo.by_commit(book.default_branch.latest_commit).to_a.group_by(&:part)
+          chapters = chapter_repo.by_commit(book.default_branch.latest_commit).to_a.group_by(&:part)
+          chapters["frontmatter"] ||= []
+          chapters["backmatter"] ||= []
+          chapters
         end
       end
     end

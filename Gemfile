@@ -2,16 +2,17 @@
 
 source "https://rubygems.org"
 
-gem "hanami", "~> 2.2"
-gem "hanami-assets", "~> 2.2"
-gem "hanami-controller", "~> 2.2"
-gem "hanami-db", "~> 2.2"
-gem "hanami-router", "~> 2.2"
-gem "hanami-validations", "~> 2.2"
-gem "hanami-view", "~> 2.2"
+gem "hanami", "~> 3.0.0"
+gem "hanami-assets", "~> 3.0.0"
+gem "hanami-action", "~> 3.0.0", path: "~/code/gems/hanami-action"
+gem "hanami-db", "~> 3.0.0"
+gem "hanami-mailer", "~> 3.0.0"
+gem "hanami-router", "~> 3.0.0"
+gem "hanami-view", "~> 3.0.0"
 
 gem "dry-types", "~> 1.7"
 gem "dry-operation"
+gem "dry-validation", "~> 1.11"
 gem "puma"
 gem "rake"
 gem "pg"
@@ -33,6 +34,7 @@ end
 
 group :development, :test do
   gem "dotenv"
+  gem "pry"
 end
 
 group :cli, :development do

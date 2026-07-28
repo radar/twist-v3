@@ -37,6 +37,13 @@ module Twist
           .distinct
           .to_a
       end
+
+      def grant_permission(book:, user:)
+        permissions
+          .changeset(:create, { book_id: book.id, user_id: user.id })
+          .map(:add_timestamps)
+          .commit
+      end
     end
   end
 end

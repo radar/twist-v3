@@ -47,32 +47,19 @@ RSpec.describe Twist::Actions::Books::Receive do
   end
 
   context "when an asciidoc book exists" do
-    let(:find_or_create_branch) do
-      ->(book_id:, ref:) { branch }
-    end
-
-    let(:find_book) do
-      ->(permalink:) { book }
+    let(:receive_book) do
+      ->(permalink:, branch_name:) { true }
     end
 
     let(:book) { double(Twist::Structs::Book, id: 1, permalink: "exploding-rails", format: "asciidoc") }
     let(:branch) { double(Twist::Structs::Branch, name: "master", username: "radar", repo: "exploding_rails") }
 
     subject do
-      described_class.new(
-        find_or_create_branch: find_or_create_branch,
-        find_book: find_book,
-      )
+      described_class.new(receive_book: receive_book)
     end
 
     it "enqueues the asciidoc worker" do
-      expect(Twist::Processors::Asciidoc::BookWorker).to receive(:perform_async)
-            .with(
-              permalink: "exploding-rails",
-              branch: "master",
-              username: "radar",
-              repo: "exploding_rails",
-            )
+      expect(receive_book).to receive(:call).with(permalink: "exploding-rails", branch_name: "refs/heads/master")
       response = subject.call(params)
       expect(response).to be_successful
     end

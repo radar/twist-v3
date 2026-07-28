@@ -18,7 +18,7 @@ module Twist
           commit_repo.latest_by_book_permalink(book_permalink:)
         end
 
-        expose :chapter do |commit, permalink:|
+        expose :chapter, decorate: true do |commit, permalink:|
           chapter_repo.find_by_permalink_and_commit(permalink:, commit: commit)
         end
 
@@ -26,11 +26,11 @@ module Twist
           element_repo.by_chapter(chapter)
         end
 
-        expose :previous_chapter, as: :chapter do |commit, chapter|
+        expose :previous_chapter, as: :chapter, decorate: true do |commit, chapter|
           chapter_repo.previous_chapter(commit, chapter)
         end
 
-        expose :next_chapter, as: :chapter do |commit, chapter|
+        expose :next_chapter, as: :chapter, decorate: true do |commit, chapter|
           chapter_repo.next_chapter(commit, chapter)
         end
 

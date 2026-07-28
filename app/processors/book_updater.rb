@@ -20,7 +20,7 @@ module Twist
 
       def update!
         book = find_book(permalink)
-        branch = find_branch(book, branch_name)
+        branch = find_or_create_branch(book, branch_name)
 
         git = Git.new(
           username: username,
@@ -39,6 +39,15 @@ module Twist
         raise "Book (#{permalink}) not found" unless book
 
         book
+      end
+
+      def find_or_create_branch(book, branch_name)
+        branch = branch_repo.find_by_book_id_and_name(book.id, branch_name)
+        unless branch
+          no_default = branch_repo.no_default_for_book?(book)
+          branch = branch_repo.create(book_id: book.id, name: branch_name, default: no_default)
+        end
+        branch
       end
 
       def find_branch(book, branch)

@@ -13,3 +13,23 @@
 #
 #   categories = Hanami.app["relations.categories"]
 #   categories.insert(title: "General")
+
+user_repo = Hanami.app["repos.user_repo"]
+user = user_repo.create(name: "Ryan", email: "me@ryanbigg.com", password: "password")
+
+book_repo = Hanami.app["repos.book_repo"]
+# book = book_repo.create(
+#   permalink: "asciidoc-book-test",
+#   title: "Asciidoc Book Test",
+#   github_user: "radar",
+#   github_repo: "asciidoc_book_test",
+# )
+
+book = book_repo.create(
+  permalink: "dev-dev-dev",
+  title: "Developers Developing Developers",
+  github_user: "radar",
+  github_repo: "devdevdev",
+)
+
+book_repo.grant_permission(book:, user:)

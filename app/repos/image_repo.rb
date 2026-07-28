@@ -37,6 +37,10 @@ module Twist
         image
       end
 
+      def update_caption(image_id, caption)
+        images.where(id: image_id).update(caption: caption)
+      end
+
       def update_image_data(image_id, image_data)
         images.where(id: image_id).update(image_data: image_data)
       end

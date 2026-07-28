@@ -26,6 +26,8 @@ module Twist
             response.redirect_to(routes.path(:book, permalink: book.permalink))
           end
 
+
+
           note_repo.update(request.params[:id], request.params[:note])
           request.flash[:success] = "Note updated successfully."
           response.redirect_to(

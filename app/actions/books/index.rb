@@ -5,10 +5,14 @@ module Twist
     module Books
       class Index < Twist::Action
         before :authenticate!
+        before :ensure_authenticated!
 
         include Deps["repos.book_repo"]
 
+        require 'pry'
+
         def handle(request, response)
+          binding.pry
           response.render view, user: response[:current_user]
         end
       end

@@ -4,12 +4,10 @@ require "bcrypt"
 module Twist
   module Repos
     class UserRepo < Twist::DB::Repo
+
       def create(user)
         user[:encrypted_password] = BCrypt::Password.create(user.delete(:password))
-        user[:created_at] = Time.now.utc
-        user[:updated_at] = Time.now.utc
-
-        users.insert(user)
+        users.command(:create).call(user)
       end
 
       def authenticate(email, password)
