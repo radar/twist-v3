@@ -27,6 +27,10 @@ puma_cluster_mode = puma_concurrency > 1
 # Typically this is set to the number of available cores.
 workers puma_concurrency
 
+if ENV.fetch("HANAMI_ENV", "development") == "production"
+  bind "unix:///run/twist/twist-app.sock"
+end
+
 #
 # Cluster mode (aka multiple workers)
 #
