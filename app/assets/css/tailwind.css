@@ -112,6 +112,46 @@ textarea {
   @apply text-red-600 font-bold;
 }
 
+.chapter .sidebarblock {
+  @apply my-4 rounded border border-sky-200 bg-sky-50 p-4;
+}
+
+.chapter .sidebarblock > .content > .title {
+  @apply mb-3 text-lg font-bold text-sky-800;
+}
+
+.chapter .sidebarblock .paragraph p {
+  @apply mb-3;
+}
+
+.chapter .sidebarblock ul {
+  @apply mb-0 list-disc list-outside space-y-2 pl-5;
+}
+
+.chapter .sidebarblock > .content > :last-child {
+  @apply mb-0;
+}
+
+.chapter .quoteblock {
+  @apply my-4 border-l-4 border-sky-400 pl-4;
+}
+
+.chapter .quoteblock blockquote p {
+  @apply mb-3 italic text-gray-700;
+}
+
+.chapter .quoteblock blockquote ul {
+  @apply mb-3 list-disc list-outside space-y-2 pl-5 italic text-gray-700;
+}
+
+.chapter .quoteblock blockquote > :last-child {
+  @apply mb-0;
+}
+
+.chapter .quoteblock .attribution {
+  @apply mt-3 text-sm text-gray-500;
+}
+
 .element .code .highlight pre {
   @apply py-2 px-3;
   overflow: auto;
