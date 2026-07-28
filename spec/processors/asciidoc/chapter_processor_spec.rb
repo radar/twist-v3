@@ -685,6 +685,27 @@ module Twist
             expect(footnote_1).not_to be_nil
           end
         end
+
+        context "sidebar" do
+          let(:content) do
+            <<~HTML.strip
+            <div class="sidebarblock">
+              <div class="content">
+                <div class="paragraph">
+                  <p>Some sidebar content.</p>
+                </div>
+              </div>
+            </div>
+            HTML
+          end
+
+          it "adds the sidebarblock element to the chapter" do
+            perform
+
+            element = elements_by_tag("div").first
+            expect(element.content).to eq(content)
+          end
+        end
       end
     end
   end

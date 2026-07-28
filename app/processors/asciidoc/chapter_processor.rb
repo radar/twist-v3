@@ -249,7 +249,7 @@ module Twist
         def process_sidebarblock(element)
           create_element(
             tag: "div",
-            content: element,
+            content: element.to_html,
           )
         end
 
