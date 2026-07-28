@@ -17,6 +17,11 @@ module Twist
     patch "#{note_prefix}/:id", to: "notes.update", as: :update_note
     get "#{note_prefix}/:id/edit", to: "notes.edit", as: :edit_note
 
+    get "/invites/new", to: "invites.new", as: :new_invite
+    post "/invites", to: "invites.create", as: :create_invite
+    get "/invites/:token", to: "invites.show", as: :invite
+    post "/invites/:token/accept", to: "invites.accept", as: :accept_invite
+
     post "/login", to: "sessions.create", as: :login_post
     get "/login/new", to: "sessions.new", as: :login
     post "/sessions", to: "sessions.create"
