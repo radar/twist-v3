@@ -5,8 +5,6 @@ Hanami.app.register_provider(:sentry) do
 
   start do
     Sentry.init do |config|
-      require 'pry'
-      binding.pry
       config.dsn = target.settings.sentry_dsn
       config.environment = ENV.fetch("HANAMI_ENV", "development")
       config.breadcrumbs_logger = [:sentry_logger, :http_logger]
