@@ -20,6 +20,10 @@ module Twist
       def find(id)
         users.where(id: id).first
       end
+
+      def find_by_email(email)
+        users.where(email: email).first
+      end
     end
   end
 end

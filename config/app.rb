@@ -7,6 +7,8 @@ module Twist
   class App < Hanami::App
     config.actions.content_security_policy[:font_src] = "'self' https://fonts.gstatic.com"
 
+    config.base_url = settings.base_url
+
     config.actions.sessions = :cookie, {
       key: "twist.session",
       secret: settings.session_secret,

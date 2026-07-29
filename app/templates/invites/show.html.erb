@@ -1,0 +1,33 @@
+<div class="max-w-md mx-auto mt-10 p-6 rounded-lg">
+  <h1 class="text-2xl font-bold mb-4">Accept your invite</h1>
+
+  <p class="mb-4">
+    <%= inviter.name %> invited <strong><%= invite.email %></strong> to Twist.
+  </p>
+
+  <% if books.any? %>
+    <p class="mb-2">You'll be given access to:</p>
+    <ul class="mb-4 list-disc list-inside">
+      <% books.each do |book| %>
+        <li><%= book.title %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <%= form_for :user, routes.path(:accept_invite, token: invite.token) do |f| %>
+    <div class="space-y-4">
+      <div>
+        <%= f.label :name, class: "block font-medium mb-2" %>
+        <%= f.text_field :name, class: "w-full border border-gray-300 p-2 mb-2", autocomplete: "name" %>
+      </div>
+      <div>
+        <%= f.label :password, class: "block font-medium mb-2" %>
+        <%= f.password_field :password, class: "w-full border border-gray-300 p-2 mb-2", autocomplete: "new-password" %>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <%= f.submit "Accept invite", class: "btn btn-blue" %>
+    </div>
+  <% end %>
+</div>

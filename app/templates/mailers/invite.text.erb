@@ -1,0 +1,12 @@
+Hello,
+
+<%= inviter.name %> has invited you to Twist.
+<% if books.any? %>
+You'll be given access to:
+<% books.each do |book| %>
+* <%= book.title %>
+<% end %>
+<% end %>
+Accept your invite by visiting:
+
+<%= accept_url %>

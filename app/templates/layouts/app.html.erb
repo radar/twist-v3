@@ -19,6 +19,8 @@
         &nbsp; | &nbsp;
         <% if user_signed_in? %>
           Signed in as <%= current_user.name %>
+          &nbsp; | &nbsp;
+          <%= link_to "Invite someone", routes.path(:new_invite) %>
         <% else %>
           <%= link_to "Login", routes.path(:login) %>
         <% end %>

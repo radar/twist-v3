@@ -38,10 +38,17 @@ module Twist
           .to_a
       end
 
-      def grant_permission(book:, user:)
+      def authored_by(user)
+        books
+          .join(:permissions, book_id: :id)
+          .where(permissions[:user_id] => user.id, permissions[:author] => true)
+          .distinct
+          .to_a
+      end
+
+      def grant_permission(book:, user:, author: false)
         permissions
-          .changeset(:create, { book_id: book.id, user_id: user.id })
-          .map(:add_timestamps)
+          .changeset(:create, { book_id: book.id, user_id: user.id, author: author })
           .commit
       end
     end

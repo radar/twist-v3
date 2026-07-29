@@ -32,4 +32,4 @@ book = book_repo.create(
   github_repo: "devdevdev",
 )
 
-book_repo.grant_permission(book:, user:)
+book_repo.grant_permission(book:, user:, author: true)

@@ -1,0 +1,32 @@
+<div class="max-w-md mx-auto mt-10 p-6 rounded-lg">
+  <%= form_for :invite, routes.path(:create_invite) do |f| %>
+    <h1 class="text-2xl font-bold mb-4">Invite someone to Twist</h1>
+
+    <div class="space-y-4">
+      <div>
+        <%= f.label :email, class: "block font-medium mb-2" %>
+        <%= f.email_field :email, class: "w-full border border-gray-300 p-2 mb-2", autocomplete: "email" %>
+      </div>
+
+      <% if books.any? %>
+        <fieldset>
+          <legend class="block font-medium mb-2">Give them access to</legend>
+          <% books.each do |book| %>
+            <label class="block">
+              <input type="checkbox" name="invite[book_ids][]" value="<%= book.id %>">
+              <%= book.title %>
+            </label>
+          <% end %>
+        </fieldset>
+      <% else %>
+        <em class="text-gray-600">
+          You are not an author on any books, so this invite will not grant access to any book.
+        </em>
+      <% end %>
+    </div>
+
+    <div class="mt-4">
+      <%= f.submit "Send invite", class: "btn btn-blue" %>
+    </div>
+  <% end %>
+</div>

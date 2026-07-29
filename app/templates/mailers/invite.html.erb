@@ -1,0 +1,17 @@
+<p>Hello,</p>
+
+<p><%= inviter.name %> has invited you to Twist.</p>
+
+<% if books.any? %>
+  <p>You'll be given access to:</p>
+
+  <ul>
+    <% books.each do |book| %>
+      <li><%= book.title %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<p>
+  <a href="<%= accept_url %>">Accept your invite</a>
+</p>
