@@ -53,3 +53,5 @@ group :test do
   gem "capybara"
   gem "rack-test"
 end
+
+gem "sentry-ruby", "~> 6.6"

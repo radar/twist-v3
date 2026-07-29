@@ -22,11 +22,11 @@ module Twist
           chapter_repo.find_by_permalink_and_commit(permalink: chapter_permalink, commit: commit)
         end
 
-        expose :element do |chapter, id:|
+        expose :element, decorate: true  do |chapter, id:|
           element_repo.find_by_chapter_and_id(chapter:, id:)
         end
 
-        expose :notes do |element|
+        expose :notes, decorate: true do |element|
           note_repo.by_element(element)
         end
       end
