@@ -59,6 +59,21 @@ h4 {
   @apply text-base;
 }
 
+/* Quoted material needs to read as quoted, not as body text. */
+.markdown-body blockquote {
+  @apply my-3 rounded-r border-l-4 border-sky-400 py-2 pl-3 pr-2 italic;
+  background-color: var(--surface-muted);
+  color: var(--text-muted);
+}
+
+.markdown-body blockquote p {
+  @apply mb-2;
+}
+
+.markdown-body blockquote > :last-child {
+  @apply mb-0;
+}
+
 a {
   @apply text-blue-600 underline;
 }
