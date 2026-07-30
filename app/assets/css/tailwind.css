@@ -355,8 +355,41 @@ a.btn-blue:hover {
 }
 
 .element:hover .note-pill-empty,
-.note-pill-empty:focus-visible {
+.note-pill-empty:focus-visible,
+/* Keep the pill visible while its note panel is open, or there's nothing to click to close it. */
+.element:has(> .element-notes:not(:empty):not([hidden])) .note-pill-empty {
   @apply opacity-100;
+}
+
+/* Turbo frames are inline custom elements by default. */
+turbo-frame {
+  display: block;
+}
+
+/* ...which means display: block would otherwise beat the UA's [hidden] rule. */
+turbo-frame[hidden] {
+  display: none;
+}
+
+/*
+ * The note panel Turbo loads in underneath a paragraph. Empty until the note
+ * pill is clicked, and only styled as a card there — on the element's own page
+ * the panel is the page, so it stays unadorned.
+ */
+.element > .element-notes:not(:empty) {
+  @apply mt-4 mb-2 border p-4;
+  border-color: var(--card-border);
+  border-radius: var(--card-radius);
+  background-color: var(--card-bg);
+  box-shadow: var(--card-shadow);
+}
+
+.element > .element-notes > h3:first-child {
+  @apply mt-0;
+}
+
+.element-notes[busy] {
+  @apply opacity-60;
 }
 
 #sidebar {

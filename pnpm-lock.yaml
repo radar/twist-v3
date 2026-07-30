@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@hotwired/turbo':
+        specifier: ^8.0.23
+        version: 8.0.23
       '@tailwindcss/cli':
         specifier: ^4.1.11
         version: 4.3.2
@@ -187,6 +190,10 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@hotwired/turbo@8.0.23':
+    resolution: {integrity: sha512-GZ7cijxEZ6Ig71u7rD6LHaRv/wcE/hNsc+nEfiWOkLNqUgLOwo5MNGWOy5ZV9ZUDSiQx1no7YxjTNnT4O6//cQ==}
+    engines: {node: '>= 18'}
 
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
@@ -875,6 +882,8 @@ snapshots:
 
   '@esbuild/win32-x64@0.25.12':
     optional: true
+
+  '@hotwired/turbo@8.0.23': {}
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:

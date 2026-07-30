@@ -12,21 +12,23 @@
   </header>
   <%= render "elements/element", book: book, chapter: chapter, element: element %>
 
-  <h3>
-    <%= element.pretty_note_count %>
-  </h3>
+  <turbo-frame id="element_notes_<%= element.id %>" class="element-notes">
+    <h3>
+      <%= element.pretty_note_count %>
+    </h3>
 
-  <%= render "notes/form", path: create_note_path(element_id: element.id) %>
+    <%= render "notes/form", path: create_note_path(element_id: element.id) %>
 
-  <div class="space-y-4">
-    <% notes.each do |note| %>
-      <%= render "notes/note",
-        note: note,
-        book: book,
-        book_permalink: book.permalink,
-        chapter_permalink: chapter.permalink,
-        element_id: element.id
-      %>
-    <% end %>
-  </div>
+    <div class="space-y-4">
+      <% notes.each do |note| %>
+        <%= render "notes/note",
+          note: note,
+          book: book,
+          book_permalink: book.permalink,
+          chapter_permalink: chapter.permalink,
+          element_id: element.id
+        %>
+      <% end %>
+    </div>
+  </turbo-frame>
 </div>
