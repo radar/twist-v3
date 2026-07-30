@@ -35,6 +35,15 @@ module Twist
           .to_a
       end
 
+      # Invites that grant access to this book and have not been accepted yet.
+      def pending_for_book(book)
+        invites
+          .join(:invite_books, invite_id: :id)
+          .where(invite_books[:book_id] => book.id, invites[:accepted_at] => nil)
+          .order { created_at.desc }
+          .to_a
+      end
+
       def accept!(invite)
         now = Time.now.utc
         invites.where(id: invite.id).update(accepted_at: now, updated_at: now)

@@ -704,6 +704,76 @@ a.btn-blue:hover {
   color: var(--text-subtle);
 }
 
+/* ---------- People / access panel ---------- */
+
+.people-subtitle {
+  color: var(--text-muted);
+}
+
+.people-list {
+  @apply mb-8 border;
+  border-color: var(--card-border);
+  border-radius: var(--card-radius);
+  background-color: var(--card-bg);
+  box-shadow: var(--card-shadow);
+}
+
+.people-list > * + * {
+  border-top: 1px solid var(--card-border);
+}
+
+.people-row {
+  @apply flex flex-wrap items-center gap-3 px-4 py-3;
+}
+
+.people-row .people-row-avatar {
+  @apply shrink-0;
+}
+
+.people-row .people-row-identity {
+  @apply flex min-w-0 flex-col;
+}
+
+.people-row .people-row-name {
+  @apply font-medium;
+  color: var(--text-strong);
+}
+
+.people-row .people-row-you {
+  @apply text-sm font-normal;
+  color: var(--text-subtle);
+}
+
+.people-row .people-row-email {
+  @apply text-sm;
+  color: var(--text-muted);
+}
+
+.people-row .people-row-actions {
+  @apply ml-auto;
+}
+
+.people-row .people-row-note {
+  @apply text-sm;
+  color: var(--text-muted);
+}
+
+.people-role {
+  @apply rounded-full border px-2 py-0.5 text-xs font-semibold;
+}
+
+.people-role-author {
+  @apply border-blue-200 bg-blue-50 text-blue-700;
+}
+
+.people-role-reader {
+  @apply border-gray-200 bg-gray-50 text-gray-600;
+}
+
+.people-role-pending {
+  @apply ml-auto border-amber-200 bg-amber-50 text-amber-700;
+}
+
 /* ---------- Dark mode ---------- */
 
 @media (prefers-color-scheme: dark) {
@@ -795,6 +865,18 @@ a.btn-blue:hover {
 
   .chapter-list {
     @apply divide-gray-700;
+  }
+
+  .people-role-author {
+    @apply border-blue-900 bg-blue-950 text-blue-200;
+  }
+
+  .people-role-reader {
+    @apply border-gray-700 bg-gray-800 text-gray-300;
+  }
+
+  .people-role-pending {
+    @apply border-amber-900 bg-amber-950 text-amber-200;
   }
 
   .note-pill,

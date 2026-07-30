@@ -1,0 +1,74 @@
+<div class="reading-column-wide">
+  <header class="mb-4">
+    <h1>
+      <%= link_to book_path(book) do %>
+        <%= book.title %>
+      <% end %>
+    </h1>
+    <p class="people-subtitle">Who can read this book, and who can act as an author on it.</p>
+  </header>
+
+  <h2>People</h2>
+
+  <div class="people-list">
+    <% people.each do |person| %>
+      <div class="people-row">
+        <div class="people-row-avatar"><%= gravatar_for person.email %></div>
+
+        <div class="people-row-identity">
+          <span class="people-row-name">
+            <%= person.name %>
+            <% if person.id == current_user.id %>
+              <span class="people-row-you">(you)</span>
+            <% end %>
+          </span>
+          <span class="people-row-email"><%= person.email %></span>
+        </div>
+
+        <span class="people-role <%= person.author ? "people-role-author" : "people-role-reader" %>">
+          <%= person.author ? "Author" : "Reader" %>
+        </span>
+
+        <div class="people-row-actions">
+          <% if person.author && author_count <= 1 %>
+            <span class="people-row-note">Last author &mdash; make someone else an author first</span>
+          <% else %>
+            <%= form_for :person, book_person_path(book, person), method: :patch, class: "inline-block" do |f| %>
+              <%= f.hidden_field :author, value: person.author ? "false" : "true" %>
+              <%= f.submit person.author ? "Remove author" : "Make author", class: "btn btn-sm #{person.author ? "btn-outline" : "btn-blue"}" %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <h2>Pending invites</h2>
+
+  <% if pending_invites.any? %>
+    <div class="people-list">
+      <% pending_invites.each do |invite| %>
+        <div class="people-row">
+          <div class="people-row-identity">
+            <span class="people-row-name"><%= invite.email %></span>
+            <span class="people-row-email">
+              Invited by <%= inviters[invite.invited_by_id]&.name || "someone" %>
+              &middot;
+              <time datetime="<%= invite.created_at.utc.iso8601 %>" title="<%= invite.created_at.utc.strftime("%e %B %Y, %H:%M UTC") %>">
+                <%= distance_of_time_in_words Time.now, invite.created_at.utc, highest_measure_only: true %> ago
+              </time>
+            </span>
+          </div>
+
+          <span class="people-role people-role-pending">Pending</span>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <em class="text-gray-600">No invites are waiting to be accepted for this book.</em>
+  <% end %>
+
+  <p class="mt-6">
+    <%= link_to "Invite someone", routes.path(:new_invite), class: "btn btn-blue btn-sm" %>
+  </p>
+</div>

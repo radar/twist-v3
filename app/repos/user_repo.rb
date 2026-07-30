@@ -21,6 +21,12 @@ module Twist
         users.where(id: id).first
       end
 
+      def find_all(ids)
+        return [] if ids.empty?
+
+        users.where(id: ids).to_a
+      end
+
       def find_by_email(email)
         users.where(email: email).first
       end

@@ -8,6 +8,13 @@
     <span class="notes-pill-count"><%= open_note_count %></span>
   <% end %>
 
+  <% if author_of?(book) %>
+    <%= link_to book_people_path(book), class: "notes-pill" do %>
+      <i class="fa-regular fa-user"></i>
+      People &amp; invites
+    <% end %>
+  <% end %>
+
   <% if chapter_sections.any? %>
     <% chapter_sections.each do |label, chapters| %>
       <h2><%= label %></h2>

@@ -9,6 +9,9 @@ module Twist
 
     get "/books/:book_permalink/notes", to: "notes.index", as: :book_notes
 
+    get "/books/:book_permalink/people", to: "people.index", as: :book_people
+    patch "/books/:book_permalink/people/:user_id", to: "people.update", as: :book_person
+
     get "/books/:book_permalink/chapters/:permalink", to: "chapters.show", as: :chapter
     get "/books/:book_permalink/chapters/:chapter_permalink/elements/:id", to: "elements.show", as: :element
 

@@ -10,6 +10,14 @@ module Twist
           routes.path(:book_notes, book_permalink: book.permalink)
         end
 
+        def book_people_path(book)
+          routes.path(:book_people, book_permalink: book.permalink)
+        end
+
+        def book_person_path(book, person)
+          routes.path(:book_person, book_permalink: book.permalink, user_id: person.id)
+        end
+
         def chapter_path(book, chapter)
           routes.path(:chapter, book_permalink: book.permalink, permalink: chapter.permalink)
         end

@@ -62,6 +62,25 @@ module Twist
           .to_a
       end
 
+      # Everyone with access to the book, each struct carrying the `author` flag
+      # from their permission row.
+      def people_for(book)
+        users
+          .join(:permissions, user_id: :id)
+          .where(permissions[:book_id] => book.id)
+          .select_append(permissions[:author])
+          .order(:name)
+          .to_a
+      end
+
+      def author_count(book)
+        permissions.where(book_id: book.id, author: true).count
+      end
+
+      def set_author(book:, user:, author:)
+        permissions.where(book_id: book.id, user_id: user.id).update(author: author)
+      end
+
       def grant_permission(book:, user:, author: false)
         permissions
           .changeset(:create, { book_id: book.id, user_id: user.id, author: author })

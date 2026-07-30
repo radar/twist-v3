@@ -17,6 +17,11 @@
     --color-red-800: oklch(44.4% 0.177 26.899);
     --color-red-900: oklch(39.6% 0.141 25.723);
     --color-red-950: oklch(25.8% 0.092 26.042);
+    --color-amber-50: oklch(98.7% 0.022 95.277);
+    --color-amber-200: oklch(92.4% 0.12 95.746);
+    --color-amber-700: oklch(55.5% 0.163 48.998);
+    --color-amber-900: oklch(41.4% 0.112 45.904);
+    --color-amber-950: oklch(27.9% 0.077 45.635);
     --color-green-50: oklch(98.2% 0.018 155.826);
     --color-green-200: oklch(92.5% 0.084 155.995);
     --color-green-500: oklch(72.3% 0.219 149.579);
@@ -73,6 +78,7 @@
     --text-3xl--line-height: calc(2.25 / 1.875);
     --text-4xl: 2.25rem;
     --text-4xl--line-height: calc(2.5 / 2.25);
+    --font-weight-normal: 400;
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
@@ -1367,6 +1373,89 @@ textarea {
   font-variant-numeric: var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,);
   color: var(--text-subtle);
 }
+.people-subtitle {
+  color: var(--text-muted);
+}
+.people-list {
+  margin-bottom: calc(var(--spacing) * 8);
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  border-color: var(--card-border);
+  border-radius: var(--card-radius);
+  background-color: var(--card-bg);
+  box-shadow: var(--card-shadow);
+}
+.people-list > * + * {
+  border-top: 1px solid var(--card-border);
+}
+.people-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(var(--spacing) * 3);
+  padding-inline: calc(var(--spacing) * 4);
+  padding-block: calc(var(--spacing) * 3);
+}
+.people-row .people-row-avatar {
+  flex-shrink: 0;
+}
+.people-row .people-row-identity {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+.people-row .people-row-name {
+  --tw-font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-strong);
+}
+.people-row .people-row-you {
+  font-size: var(--text-sm);
+  line-height: var(--tw-leading, var(--text-sm--line-height));
+  --tw-font-weight: var(--font-weight-normal);
+  font-weight: var(--font-weight-normal);
+  color: var(--text-subtle);
+}
+.people-row .people-row-email {
+  font-size: var(--text-sm);
+  line-height: var(--tw-leading, var(--text-sm--line-height));
+  color: var(--text-muted);
+}
+.people-row .people-row-actions {
+  margin-left: auto;
+}
+.people-row .people-row-note {
+  font-size: var(--text-sm);
+  line-height: var(--tw-leading, var(--text-sm--line-height));
+  color: var(--text-muted);
+}
+.people-role {
+  border-radius: calc(infinity * 1px);
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  padding-inline: calc(var(--spacing) * 2);
+  padding-block: calc(var(--spacing) * 0.5);
+  font-size: var(--text-xs);
+  line-height: var(--tw-leading, var(--text-xs--line-height));
+  --tw-font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-semibold);
+}
+.people-role-author {
+  border-color: var(--color-blue-200);
+  background-color: var(--color-blue-50);
+  color: var(--color-blue-700);
+}
+.people-role-reader {
+  border-color: var(--color-gray-200);
+  background-color: var(--color-gray-50);
+  color: var(--color-gray-600);
+}
+.people-role-pending {
+  margin-left: auto;
+  border-color: var(--color-amber-200);
+  background-color: var(--color-amber-50);
+  color: var(--color-amber-700);
+}
 @media (prefers-color-scheme: dark) {
   :root {
     --card-border: var(--color-gray-700);
@@ -1445,6 +1534,21 @@ textarea {
     :where(& > :not(:last-child)) {
       border-color: var(--color-gray-700);
     }
+  }
+  .people-role-author {
+    border-color: var(--color-blue-900);
+    background-color: var(--color-blue-950);
+    color: var(--color-blue-200);
+  }
+  .people-role-reader {
+    border-color: var(--color-gray-700);
+    background-color: var(--color-gray-800);
+    color: var(--color-gray-300);
+  }
+  .people-role-pending {
+    border-color: var(--color-amber-900);
+    background-color: var(--color-amber-950);
+    color: var(--color-amber-200);
   }
   .note-pill, .notes-pill, .chapter-row .chapter-row-notes {
     border-color: var(--color-blue-900);
