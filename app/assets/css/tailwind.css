@@ -4,10 +4,18 @@ body {
   font-family: "Nunito Sans";
 }
 
-h1,
-h2,
-h3,
-h4 {
+:root {
+  --card-radius: 0.5rem;
+  --card-border: var(--color-gray-200);
+  --card-bg: #fff;
+  --card-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --surface-muted: var(--color-gray-50);
+  --text-strong: var(--color-gray-900);
+  --text-muted: var(--color-gray-600);
+  --text-subtle: var(--color-gray-400);
+}
+
+:where(h1, h2, h3, h4) {
   @apply mb-4 mt-8;
 }
 
@@ -59,6 +67,27 @@ a.no-underline {
   @apply no-underline;
 }
 
+/* Headings that happen to be links should read as headings, not as links. */
+h1 a,
+h2 a,
+h3 a,
+h4 a {
+  @apply text-gray-900 no-underline;
+}
+
+h1 a:hover,
+h2 a:hover,
+h3 a:hover,
+h4 a:hover {
+  @apply underline;
+}
+
+/* Long-form column: ~70 characters of text, plus room for the note gutter. */
+.reading-column {
+  @apply mx-auto pr-4 pl-14;
+  max-width: calc(70ch + 4.5rem);
+}
+
 pre {
   font-family: "Source Code Pro";
 }
@@ -101,7 +130,9 @@ textarea {
 }
 
 .listingblock .title {
-  @apply bg-gray-300 p-2 font-bold;
+  @apply p-2 font-bold;
+  background-color: var(--surface-muted);
+  color: var(--text-strong);
 }
 
 .listingblock .content pre {
@@ -173,7 +204,8 @@ textarea {
 }
 
 .chapter .quoteblock .attribution {
-  @apply mt-3 text-sm text-gray-500;
+  @apply mt-3 text-sm;
+  color: var(--text-muted);
 }
 
 .element .code .highlight pre {
@@ -183,19 +215,40 @@ textarea {
 }
 
 .btn {
-  @apply bg-white font-bold border-2 py-2 px-4 rounded inline-block;
+  @apply inline-block cursor-pointer rounded border border-transparent px-3 py-1.5 text-sm font-semibold no-underline;
+  transition: background-color 150ms, border-color 150ms, color 150ms;
 }
 
-.btn:enabled:hover {
-  @apply text-white;
+.btn-sm {
+  @apply px-2.5 py-1 text-xs;
 }
 
+/* Primary: solid, so it reads as the main action. */
 .btn-blue {
-  @apply text-blue-500 border-blue-500;
+  @apply border-blue-600 bg-blue-600 text-white;
 }
 
-.btn-blue:enabled:hover {
-  @apply bg-blue-700 border-blue-600;
+.btn-blue:enabled:hover,
+a.btn-blue:hover {
+  @apply border-blue-700 bg-blue-700 text-white no-underline;
+}
+
+/* Secondary: outlined. */
+.btn-outline {
+  @apply border-blue-600 bg-white text-blue-600;
+}
+
+.btn-outline:enabled:hover {
+  @apply bg-blue-50;
+}
+
+/* Tertiary: chrome actions such as "Sign out". */
+.btn-quiet {
+  @apply border-gray-300 bg-white font-semibold text-gray-700;
+}
+
+.btn-quiet:enabled:hover {
+  @apply border-gray-400 bg-gray-100 text-gray-900;
 }
 
 .btn-green {
@@ -257,35 +310,579 @@ textarea {
 }
 
 .chapter figure figcaption {
-  @apply p-2 bg-gray-200;
+  @apply p-2;
+  background-color: var(--surface-muted);
+  color: var(--text-muted);
 }
 
 .element .note-button {
   position: absolute;
-  left: -3.25rem;
-  top: -0.3rem;
+  left: -3.5rem;
+  top: 0.1rem;
 }
 
-@media screen and (min-width: 800px) {
-  .element .note-button {
-    opacity: 0.3;
-    transition: opacity 750ms;
-  }
-
-  .element:hover .note-button {
-    opacity: 1;
-  }
+.note-pill {
+  @apply inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 text-xs font-semibold leading-none text-blue-700 no-underline;
+  transition: opacity 200ms, background-color 200ms, border-color 200ms;
 }
 
-.element .no-notes {
-  opacity: 0;
+.note-pill:hover {
+  @apply border-blue-300 bg-blue-100 text-blue-800 no-underline;
 }
 
-.element:hover .no-notes {
-  opacity: 1;
-  transition: opacity 750ms;
+.note-pill .fa-comment {
+  @apply text-sm;
+}
+
+/* Paragraphs with no notes yet only advertise themselves on hover. */
+.note-pill-empty {
+  @apply border-gray-200 bg-white text-gray-400 opacity-0;
+}
+
+.element:hover .note-pill-empty,
+.note-pill-empty:focus-visible {
+  @apply opacity-100;
 }
 
 #sidebar {
   @apply text-sm;
+}
+
+/* books/:permalink/notes — one card per open note */
+.open-note {
+  @apply mb-6 border;
+  border-color: var(--card-border);
+  border-radius: var(--card-radius);
+  background-color: var(--card-bg);
+  box-shadow: var(--card-shadow);
+}
+
+.open-note .open-note-chapter {
+  @apply border-b px-4 py-2 text-sm;
+  border-color: var(--card-border);
+  background-color: var(--surface-muted);
+}
+
+.open-note .open-note-chapter a {
+  @apply font-semibold no-underline;
+  color: var(--text-strong);
+}
+
+.open-note .open-note-chapter a:hover {
+  @apply underline;
+  color: var(--color-blue-600);
+}
+
+.open-note .open-note-element {
+  @apply border-l-4 border-sky-300 bg-sky-50/50 mx-4 mt-4 px-4 py-2 text-gray-700;
+}
+
+.open-note .open-note-element > div > :last-child {
+  @apply mb-0;
+}
+
+.open-note .open-note-body {
+  @apply p-4;
+}
+
+/* Previous/next chapter bar */
+.chapter-nav {
+  @apply my-8 flex items-start justify-between gap-4 border-y border-gray-200 py-3 text-sm;
+}
+
+.chapter-nav .chapter-nav-next {
+  @apply ml-auto text-right;
+}
+
+.chapter-nav .chapter-nav-label {
+  @apply block text-xs font-semibold uppercase tracking-wide;
+  color: var(--text-muted);
+}
+
+.chapter-nav a {
+  @apply font-medium no-underline;
+  color: var(--text-strong);
+}
+
+.chapter-nav a:hover {
+  @apply underline;
+  color: var(--color-blue-600);
+}
+
+.chapter-nav a ol {
+  @apply m-0;
+}
+
+/* Books index */
+.book-list {
+  @apply space-y-4;
+}
+
+.book-card {
+  @apply block border p-5 no-underline;
+  border-color: var(--card-border);
+  border-radius: var(--card-radius);
+  background-color: var(--card-bg);
+  box-shadow: var(--card-shadow);
+  transition: border-color 200ms, box-shadow 200ms;
+}
+
+.book-card:hover {
+  @apply border-blue-400 no-underline shadow-md;
+}
+
+.book-card .book-card-title {
+  @apply block text-2xl font-semibold;
+  color: var(--text-strong);
+}
+
+.book-card:hover .book-card-title {
+  @apply text-blue-700 underline;
+}
+
+.book-card .book-card-blurb {
+  @apply mt-1 block;
+  color: var(--text-muted);
+}
+
+.book-card .book-card-cta {
+  @apply mt-3 block text-sm font-semibold text-blue-600;
+}
+
+/* books/show — open notes action + chapter list */
+.notes-pill {
+  @apply inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1.5 text-sm font-semibold text-blue-700 no-underline;
+  transition: background-color 200ms, border-color 200ms;
+}
+
+.notes-pill:hover {
+  @apply border-blue-300 bg-blue-100 text-blue-800 no-underline;
+}
+
+.notes-pill .notes-pill-count {
+  @apply rounded-full bg-blue-600 px-2 py-0.5 text-xs font-bold text-white;
+}
+
+.chapter-list {
+  @apply mb-8 list-none divide-y divide-gray-200 border;
+  border-color: var(--card-border);
+  border-radius: var(--card-radius);
+  background-color: var(--card-bg);
+  box-shadow: var(--card-shadow);
+}
+
+.chapter-row {
+  @apply flex items-baseline gap-3 px-4 py-3 no-underline;
+  transition: background-color 150ms;
+}
+
+.chapter-row:hover {
+  @apply bg-gray-50 no-underline;
+}
+
+.chapter-row .chapter-row-number {
+  @apply w-6 shrink-0 text-right text-sm tabular-nums;
+  color: var(--text-subtle);
+}
+
+.chapter-row .chapter-row-title {
+  @apply font-medium;
+  color: var(--text-strong);
+}
+
+.chapter-row:hover .chapter-row-title {
+  @apply text-blue-700 underline;
+}
+
+.chapter-row .chapter-row-cue {
+  @apply ml-auto;
+  color: var(--text-subtle);
+}
+
+.chapter-row:hover .chapter-row-cue {
+  @apply text-blue-500;
+}
+
+/* ---------- Global affordances ---------- */
+
+:focus-visible {
+  outline: 2px solid var(--color-blue-500);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.form-input,
+.form-textarea {
+  @apply w-full rounded border border-gray-300 bg-white px-3 py-2 text-gray-900;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  @apply border-blue-400;
+  outline: 2px solid var(--color-blue-500);
+  outline-offset: 1px;
+}
+
+.form-label {
+  @apply mb-1 block font-medium text-gray-700;
+}
+
+/* ---------- Flash messages ---------- */
+
+.alert {
+  @apply mb-6 flex items-start gap-2 rounded border px-4 py-3 text-sm;
+}
+
+.alert-success {
+  @apply border-green-200 bg-green-50 text-green-800;
+}
+
+.alert-error {
+  @apply border-red-200 bg-red-50 text-red-800;
+}
+
+/* ---------- Site header ---------- */
+
+.site-header {
+  @apply mb-8 border-b border-gray-200 bg-white;
+}
+
+.site-header-inner {
+  @apply mx-auto flex w-full max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3;
+}
+
+.site-wordmark {
+  @apply text-lg font-bold tracking-tight text-gray-900 no-underline;
+}
+
+.site-wordmark:hover {
+  @apply text-gray-900 no-underline;
+}
+
+.site-nav {
+  @apply flex items-center gap-4 text-sm;
+}
+
+.site-nav-link {
+  @apply font-medium text-gray-600 no-underline;
+}
+
+.site-nav-link:hover {
+  @apply text-gray-900 no-underline;
+}
+
+.site-nav-link-active {
+  @apply text-gray-900;
+  box-shadow: inset 0 -2px 0 0 var(--color-blue-600);
+}
+
+.site-user {
+  @apply ml-auto flex items-center gap-3 text-sm;
+}
+
+.site-user-name {
+  @apply text-gray-600;
+}
+
+.site-main {
+  @apply mx-auto w-full max-w-5xl px-4 pb-16;
+}
+
+/* ---------- Notes and comments ---------- */
+
+.note {
+  @apply flex gap-3;
+}
+
+.note-avatar {
+  @apply shrink-0 pt-1;
+}
+
+.note-main {
+  @apply min-w-0 flex-1;
+}
+
+.note-header {
+  @apply flex flex-wrap items-baseline gap-x-3 gap-y-1 rounded-t border border-b-0 px-3 py-2 text-sm;
+  border-color: var(--card-border);
+  background-color: var(--surface-muted);
+  color: var(--text-muted);
+}
+
+.note-author {
+  @apply font-semibold;
+  color: var(--text-strong);
+}
+
+.note-actions {
+  @apply ml-auto flex items-center gap-3 text-sm;
+}
+
+.note-action-button {
+  @apply cursor-pointer border-0 bg-transparent p-0 text-blue-600 underline;
+}
+
+.note-action-button:hover {
+  @apply text-blue-800;
+}
+
+.note-body {
+  @apply rounded-b border px-3 py-3;
+  border-color: var(--card-border);
+  background-color: var(--card-bg);
+}
+
+.note-comments {
+  @apply mt-3 space-y-3 border-l-2 pl-4;
+  border-color: var(--card-border);
+}
+
+.note .comment {
+  @apply text-sm;
+}
+
+/* Wider variant for pages without a note gutter (book overview). */
+.reading-column-wide {
+  @apply mx-auto px-4;
+  max-width: 56rem;
+}
+
+.chapter-row .chapter-row-notes {
+  @apply ml-auto inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 text-xs font-semibold text-blue-700;
+}
+
+.chapter-row .chapter-row-notes + .chapter-row-cue {
+  @apply ml-3;
+}
+
+/* ---------- Chapter page layout with table of contents ---------- */
+
+.reading-layout {
+  @apply mx-auto flex justify-center gap-10;
+}
+
+.chapter-toc {
+  @apply hidden;
+}
+
+@media (min-width: 1280px) {
+  .chapter-toc {
+    @apply sticky top-6 block w-64 shrink-0 self-start overflow-y-auto text-sm;
+    max-height: calc(100vh - 6rem);
+  }
+}
+
+.chapter-toc-heading {
+  @apply mb-2 text-xs font-semibold uppercase tracking-wide;
+  color: var(--text-muted);
+}
+
+.chapter-toc ol {
+  @apply list-none space-y-1;
+}
+
+.chapter-toc-link {
+  @apply flex gap-2 rounded px-2 py-1 no-underline;
+  color: var(--text-muted);
+}
+
+.chapter-toc-link:hover {
+  @apply no-underline;
+  background-color: var(--surface-muted);
+  color: var(--text-strong);
+}
+
+.chapter-toc-link-active {
+  @apply font-semibold;
+  background-color: var(--surface-muted);
+  color: var(--text-strong);
+  box-shadow: inset 2px 0 0 0 var(--color-blue-600);
+}
+
+.chapter-toc-number {
+  @apply w-5 shrink-0 text-right tabular-nums;
+  color: var(--text-subtle);
+}
+
+/* ---------- Dark mode ---------- */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --card-border: var(--color-gray-700);
+    --card-bg: var(--color-gray-900);
+    --card-shadow: none;
+    --surface-muted: var(--color-gray-800);
+    --text-strong: var(--color-gray-100);
+    --text-muted: var(--color-gray-400);
+    --text-subtle: var(--color-gray-500);
+  }
+
+  body {
+    @apply bg-gray-950 text-gray-200;
+  }
+
+  a {
+    @apply text-blue-400;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-gray-100;
+  }
+
+  h1 a, h2 a, h3 a, h4 a {
+    @apply text-gray-100;
+  }
+
+  .site-header {
+    @apply border-gray-800 bg-gray-900;
+  }
+
+  .site-wordmark,
+  .site-wordmark:hover {
+    @apply text-gray-100;
+  }
+
+  .site-nav-link {
+    @apply text-gray-400;
+  }
+
+  .site-nav-link:hover,
+  .site-nav-link-active {
+    @apply text-gray-100;
+  }
+
+  .site-user-name {
+    @apply text-gray-400;
+  }
+
+  .alert-success {
+    @apply border-green-900 bg-green-950 text-green-200;
+  }
+
+  .alert-error {
+    @apply border-red-900 bg-red-950 text-red-200;
+  }
+
+  .btn-quiet,
+  .btn-outline {
+    @apply border-gray-600 bg-gray-800 text-gray-100;
+  }
+
+  .btn-quiet:enabled:hover,
+  .btn-outline:enabled:hover {
+    @apply border-gray-500 bg-gray-700 text-white;
+  }
+
+  .form-input,
+  .form-textarea {
+    @apply border-gray-600 bg-gray-900 text-gray-100;
+  }
+
+  .form-label {
+    @apply text-gray-300;
+  }
+
+  .book-card:hover .book-card-title,
+  .chapter-row:hover .chapter-row-title {
+    @apply text-blue-300;
+  }
+
+  .book-card:hover,
+  .chapter-row:hover {
+    @apply border-blue-500;
+    background-color: var(--surface-muted);
+  }
+
+  .chapter-list {
+    @apply divide-gray-700;
+  }
+
+  .note-pill,
+  .notes-pill,
+  .chapter-row .chapter-row-notes {
+    @apply border-blue-900 bg-blue-950 text-blue-200;
+  }
+
+  .note-pill:hover,
+  .notes-pill:hover {
+    @apply border-blue-700 bg-blue-900 text-blue-100;
+  }
+
+  .note-pill-empty {
+    @apply border-gray-700 bg-gray-900 text-gray-500;
+  }
+
+  .note-action-button {
+    @apply text-blue-400;
+  }
+
+  .chapter-nav {
+    @apply border-gray-800;
+  }
+
+  .chapter-nav a:hover,
+  .open-note .open-note-chapter a:hover {
+    color: var(--color-blue-300);
+  }
+
+  .book-card .book-card-cta {
+    @apply text-blue-400;
+  }
+
+  .open-note .open-note-element {
+    @apply border-sky-700 bg-sky-950/40 text-gray-300;
+  }
+
+  .chapter table {
+    @apply divide-gray-700 bg-gray-900;
+  }
+
+  .chapter table thead th {
+    @apply bg-gray-800;
+  }
+
+  .chapter table tbody tr:nth-child(even) td {
+    @apply bg-gray-800/50;
+  }
+
+  .chapter .sidebarblock {
+    @apply border-sky-800 bg-sky-950/40;
+  }
+
+  .chapter .sidebarblock > .content > .title {
+    @apply text-sky-200;
+  }
+
+  .chapter .quoteblock blockquote p,
+  .chapter .quoteblock blockquote ul {
+    @apply text-gray-300;
+  }
+
+  .admonitionblock.note,
+  .admonitionblock.tip {
+    @apply border-blue-900 bg-blue-950;
+  }
+
+  .admonitionblock.warning {
+    @apply border-red-900 bg-red-950;
+  }
+
+  .element p code {
+    @apply text-red-300;
+  }
+}
+
+/* ---------- Commit / branch meta line ---------- */
+
+.commit-info {
+  @apply mb-4 flex flex-wrap items-center gap-2 text-sm;
+  color: var(--text-muted);
+}
+
+.commit-info-ref {
+  @apply rounded border px-1.5 py-0.5 text-xs font-medium;
+  font-family: "Source Code Pro", ui-monospace, monospace;
+  border-color: var(--card-border);
+  background-color: var(--surface-muted);
+  color: var(--text-strong);
 }

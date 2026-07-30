@@ -22,7 +22,12 @@ module Twist
           chapter_repo.find_by_permalink_and_commit(permalink:, commit: commit)
         end
 
-        expose :elements do |chapter|
+        # Every chapter in this commit, for the table of contents.
+        expose :toc_chapters do |commit|
+          chapter_repo.by_commit(commit).to_a
+        end
+
+        expose :elements, decorate: true do |chapter|
           element_repo.by_chapter(chapter)
         end
 

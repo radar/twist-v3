@@ -1,36 +1,32 @@
 
 
-<div class="flex flex-wrap lg:flex-no-wrap mx-16 md:mx-0">
-  <div class="w-1/12"></div>
-  <div class="w-full lg:w-3/4 flex-grow mr-4 chapter">
-    <header class="mb-4">
-      <h1>
-        <%= link_to book_path(book) do %>
-          <%= book.title %>
-        <% end %>
-      </h1>
-
-      <%= render "books/commit_info", branch: commit.branch, commit: commit %>
-    </header>
-    <%= render "elements/element", book: book, chapter: chapter, element: element %>
-
-    <h3>
-      <%= element.pretty_note_count %>
-    </h3>
-
-    <%= render "notes/form", path: create_note_path(element_id: element.id) %>
-
-    <div class="space-y-4">
-      <% notes.each do |note| %>
-        <%= render "notes/note",
-          note: note,
-          book_permalink: book.permalink,
-          chapter_permalink: chapter.permalink,
-          element_id: element.id
-        %>
+<div class="reading-column chapter">
+  <header class="mb-4">
+    <h1>
+      <%= link_to book_path(book) do %>
+        <%= book.title %>
       <% end %>
-    </div>
+    </h1>
 
+    <%= render "books/commit_info", branch: commit.branch, commit: commit %>
+  </header>
+  <%= render "elements/element", book: book, chapter: chapter, element: element %>
 
+  <h3>
+    <%= element.pretty_note_count %>
+  </h3>
+
+  <%= render "notes/form", path: create_note_path(element_id: element.id) %>
+
+  <div class="space-y-4">
+    <% notes.each do |note| %>
+      <%= render "notes/note",
+        note: note,
+        book: book,
+        book_permalink: book.permalink,
+        chapter_permalink: chapter.permalink,
+        element_id: element.id
+      %>
+    <% end %>
   </div>
 </div>

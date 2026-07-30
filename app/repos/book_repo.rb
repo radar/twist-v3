@@ -15,6 +15,12 @@ module Twist
         books.where(permalink: permalink).limit(1).one!
       end
 
+      # Like #find_by_permalink, but returns nil instead of raising when no
+      # book matches the permalink.
+      def by_permalink(permalink)
+        books.where(permalink: permalink).limit(1).one
+      end
+
       def find_by_permalink_with_latest_commit(permalink)
         books.combine(default_branch: :latest_commit).where(permalink: permalink).limit(1).one!
       end
@@ -28,6 +34,12 @@ module Twist
 
       def permitted?(book:, user:)
         permissions.where(book_id: book.id, user_id: user.id).exist?
+      end
+
+      def author?(book:, user:)
+        return false if user.nil?
+
+        permissions.where(book_id: book.id, user_id: user.id, author: true).exist?
       end
 
       def permitted_for_user(user)

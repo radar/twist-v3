@@ -1,17 +1,13 @@
 <div class="relative element">
-  <span class="absolute note-button" id="note_button_<%= element.id %>">
-    <a href='<%= element_path(book: book, chapter: chapter, id: element.id) %>' class="no-underline">
-      <span class="<%= element.note_count == 0 ? 'no-notes' : '' %>">
-        <span class="note-count text-sm"><%= element.note_count %></span>
-        <i class="fa-regular fa-comment fa-xl text-blue-700"></i>
-      </span>
+  <span class="note-button" id="note_button_<%= element.id %>">
+    <a
+      href='<%= element_path(book: book, chapter: chapter, id: element.id) %>'
+      class="note-pill <%= element.note_count == 0 ? 'note-pill-empty' : '' %>"
+      aria-label="<%= element.pretty_note_count %> on this paragraph"
+    >
+      <i class="fa-regular fa-comment"></i>
+      <span class="note-count"><%= element.note_count %></span>
     </a>
   </span>
-  <div id="<%= element.id %>">
-    <% if element.tag == 'img' %>
-      <img src='<%= element.image.image_url %>' class='element-image'>
-    <% else %>
-      <%= raw element.content %>
-    <% end %>
-  </div>
+  <%= render "elements/content", element: element %>
 </div>

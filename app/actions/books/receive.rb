@@ -13,9 +13,19 @@ module Twist
         def handle(request, response)
           payload = JSON.parse(request.params[:payload])
 
-          receive_book.(permalink: request.params[:permalink], branch_name: payload["ref"])
+          result = receive_book.(
+            permalink: request.params[:permalink],
+            branch_name: payload["ref"]
+          )
 
-          200
+          case result
+          in Failure(:book_not_found)
+            response.status = 404
+            response.format = :json
+            response.body = {error: "Book not found"}.to_json
+          else
+            response.status = 200
+          end
         end
       end
     end

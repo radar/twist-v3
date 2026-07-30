@@ -15,8 +15,6 @@ module Twist
     end
 
     def ensure_authenticated!(request, response)
-      puts "*" * 50
-      p request.session[:user_id]
       unless request.session[:user_id]
         request.flash[:error] = "You must be logged in to perform this action."
         response.redirect_to routes.path(:login)

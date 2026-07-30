@@ -3,9 +3,11 @@
 module Twist
   class Routes < Hanami::Routes
     root to: "books.index"
-    get "/books", to: "books.index"
+    get "/books", to: "books.index", as: :books
     get "/books/:permalink", to: "books.show", as: :book
     post "/books/:permalink/receive", to: "books.receive"
+
+    get "/books/:book_permalink/notes", to: "notes.index", as: :book_notes
 
     get "/books/:book_permalink/chapters/:permalink", to: "chapters.show", as: :chapter
     get "/books/:book_permalink/chapters/:chapter_permalink/elements/:id", to: "elements.show", as: :element
@@ -25,6 +27,7 @@ module Twist
     post "/login", to: "sessions.create", as: :login_post
     get "/login/new", to: "sessions.new", as: :login
     post "/sessions", to: "sessions.create"
+    post "/logout", to: "sessions.destroy", as: :logout
     get "/notes/:id/edit", to: "notes.edit"
     patch "/notes/:id", to: "notes.update"
   end

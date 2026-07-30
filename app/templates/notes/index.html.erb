@@ -1,0 +1,43 @@
+<div class="reading-column chapter">
+  <header class="mb-4">
+    <h1>
+      <%= link_to book_path(book) do %>
+        <%= book.title %>
+      <% end %>
+    </h1>
+
+    <%= render "books/commit_info", branch: book.default_branch, commit: commit %>
+  </header>
+
+  <h2>Open notes</h2>
+
+  <% if notes.any? %>
+    <% notes.each do |note| %>
+      <% element = note.element %>
+      <% chapter = element.chapter %>
+      <div class="open-note">
+        <div class="open-note-chapter">
+          <%= link_to element_path(book: book, chapter: chapter, id: element.id) do %>
+            <%= chapter.title %>
+          <% end %>
+        </div>
+
+        <div class="open-note-element">
+          <%= render "elements/content", element: element %>
+        </div>
+
+        <div class="open-note-body">
+          <%= render "notes/note",
+            note: note,
+            book: book,
+            book_permalink: book.permalink,
+            chapter_permalink: chapter.permalink,
+            element_id: element.id
+          %>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <em class="text-gray-600">No open notes for this book.</em>
+  <% end %>
+</div>

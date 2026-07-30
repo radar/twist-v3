@@ -6,6 +6,7 @@ module Twist
       class Update < Twist::Action
         include Deps["repos.book_repo"]
         include Deps["repos.note_repo"]
+        include NoteAuthorization
         before :authenticate!
 
         params do
@@ -21,12 +22,12 @@ module Twist
         def handle(request, response)
           book = book_repo.find_by_permalink(request.params[:book_permalink])
 
-          unless book_repo.permitted?(book:, user: response[:current_user])
-            request.flash[:error] = "You do not have permission to close notes for this book."
+          note = note_repo.find_by_book_and_id(book, request.params[:id])
+
+          unless can_edit_note?(book:, note:, user: response[:current_user])
+            request.flash[:error] = "You can only edit your own notes."
             response.redirect_to(routes.path(:book, permalink: book.permalink))
           end
-
-
 
           note_repo.update(request.params[:id], request.params[:note])
           request.flash[:success] = "Note updated successfully."

@@ -2,7 +2,6 @@ module Twist
   module Operations
     module Books
       class Receive < Twist::Operation
-        include Deps["repos.book_repo"]
         include Deps[find_or_create_branch: "operations.branches.find_or_create"]
         include Deps[find_book: "operations.books.find"]
 

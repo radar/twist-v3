@@ -6,6 +6,8 @@ module Twist
       schema :elements, infer: true do
         associations do
           belongs_to :image
+          belongs_to :chapter
+          has_many :notes
         end
       end
 

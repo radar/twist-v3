@@ -1,19 +1,22 @@
-<div data-test-class="comment">
-  <div class="flex mt-2">
-    <div class="w-34 p-4">
-      <%= gravatar_for user.email %>
+<div class="note comment" data-test-class="comment">
+  <div class="note-avatar">
+    <%= gravatar_for user.email, size: 32 %>
+  </div>
+
+  <div class="note-main">
+    <div class="note-header">
+      <div class="note-byline">
+        <span class="note-author"><%= user.name %></span>
+        &middot;
+        <time datetime="<%= comment.created_at.utc.iso8601 %>" title="<%= comment.created_at.utc.strftime("%e %B %Y, %H:%M UTC") %>">
+          <%= time_ago_in_words comment.created_at, highest_measure_only: true %> ago
+        </time>
+      </div>
     </div>
 
-    <div class="w-full">
-      <div class="bg-gray-200 border-gray-300 border-b-0 border px-4 py-2 rounded-t-md">
-        <%= user.name %><br />
-        <small><%= time_ago_in_words comment.created_at, highest_measure_only: true %> ago</small>
-      </div>
-      <div class="p-4 b-4 border border-gray-300 mb-4">
+    <div class="note-body">
+      <div class="markdown-body">
         <%= render_markdown comment.text %>
-        <div class="mt-4 text-sm">
-          Edit Button / Delete Button
-        </div>
       </div>
     </div>
   </div>

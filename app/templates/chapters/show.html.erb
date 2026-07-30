@@ -1,6 +1,22 @@
-<div class="flex flex-wrap lg:flex-no-wrap mx-16 md:mx-0">
-  <div class="w-1/12"></div>
-  <div class="w-full lg:w-3/4 flex-grow mr-4 chapter">
+<div class="reading-layout">
+  <aside id="sidebar" class="chapter-toc" aria-label="Chapters">
+    <p class="chapter-toc-heading">Chapters</p>
+    <ol>
+      <% toc_chapters.each do |toc_chapter| %>
+        <li>
+          <a
+            class="chapter-toc-link <%= "chapter-toc-link-active" if toc_chapter.id == chapter.id %>"
+            href="<%= chapter_path(book, toc_chapter) %>"
+          >
+            <span class="chapter-toc-number"><%= chapter_number(toc_chapter) %></span>
+            <span><%= toc_chapter.title %></span>
+          </a>
+        </li>
+      <% end %>
+    </ol>
+  </aside>
+
+  <div class="reading-column chapter">
     <header class="mb-4">
       <h1>
         <%= link_to book_path(book) do %>
@@ -12,7 +28,7 @@
     </header>
 
     <%= render "chapters/chapter_links", book: book, previous_chapter: previous_chapter, next_chapter: next_chapter  %>
-    <h2 class="mt-3">
+    <h2>
       <%= chapter.header %>
     </h2>
     <div class="elements">

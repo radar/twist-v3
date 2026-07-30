@@ -1,26 +1,37 @@
-<div class="mt-3">
+<div class="reading-column-wide">
   <h1><%= book.title %></h1>
   <%= render "books/commit_info", branch: book.default_branch, commit: book.default_branch.latest_commit %>
-  <% if chapters["frontmatter"].any? %>
-    <h2>Frontmatter</h2>
-    <ol class='list-[lower-roman] list-inside'>
-      <% chapters["frontmatter"].each do |chapter| %>
-        <li>
-          <%= link_to chapter_path(book, chapter) do %>
-            <%= chapter.title %>
-          <% end %>
-        </li>
-      <% end %>
-    </ol>
+
+  <%= link_to book_notes_path(book), class: "notes-pill" do %>
+    <i class="fa-regular fa-comment"></i>
+    Open notes
+    <span class="notes-pill-count"><%= open_note_count %></span>
   <% end %>
-  <h2>Chapters</h2>
-  <ol class='list-decimal list-inside'>
-    <% chapters["mainmatter"].each do |chapter| %>
-      <li>
-        <%= link_to chapter_path(book, chapter) do %>
-          <%= chapter.title %>
+
+  <% if chapter_sections.any? %>
+    <% chapter_sections.each do |label, chapters| %>
+      <h2><%= label %></h2>
+      <ol class="chapter-list">
+        <% chapters.each do |chapter| %>
+          <li>
+            <a class="chapter-row" href="<%= chapter_path(book, chapter) %>">
+              <span class="chapter-row-number"><%= chapter_number(chapter) %></span>
+              <span class="chapter-row-title"><%= chapter.title %></span>
+              <% if open_note_counts[chapter.id].to_i > 0 %>
+                <span class="chapter-row-notes">
+                  <i class="fa-regular fa-comment"></i>
+                  <%= open_note_counts[chapter.id] %>
+                </span>
+              <% end %>
+              <span class="chapter-row-cue" aria-hidden="true">&rarr;</span>
+            </a>
+          </li>
         <% end %>
-      </li>
+      </ol>
     <% end %>
-  </ol>
+  <% else %>
+    <p class="mt-6">
+      <em class="text-gray-600">No chapters have been processed for this book yet.</em>
+    </p>
+  <% end %>
 </div>

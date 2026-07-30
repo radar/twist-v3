@@ -6,16 +6,39 @@ module Twist
       class Show < Twist::View
         include Deps["repos.book_repo"]
         include Deps["repos.chapter_repo"]
+        include Deps["repos.note_repo"]
+
+        SECTIONS = [
+          ["frontmatter", "Frontmatter"],
+          ["mainmatter", "Chapters"],
+          ["backmatter", "Appendices"]
+        ].freeze
 
         expose :book do |permalink:|
           book_repo.find_by_permalink_with_latest_commit(permalink)
         end
 
-        expose :chapters do |book|
-          chapters = chapter_repo.by_commit(book.default_branch.latest_commit).to_a.group_by(&:part)
-          chapters["frontmatter"] ||= []
-          chapters["backmatter"] ||= []
-          chapters
+        expose :commit, private: true do |book|
+          book.default_branch.latest_commit
+        end
+
+        # [label, chapters] per part, in reading order, skipping empty parts.
+        expose :chapter_sections do |commit|
+          chapters = chapter_repo.by_commit(commit).to_a.group_by(&:part)
+
+          SECTIONS.filter_map do |part, label|
+            next if chapters[part].nil? || chapters[part].empty?
+
+            [label, chapters[part]]
+          end
+        end
+
+        expose :open_note_counts do |commit|
+          note_repo.open_counts_by_chapter(commit)
+        end
+
+        expose :open_note_count do |open_note_counts|
+          open_note_counts.values.sum
         end
       end
     end

@@ -5,7 +5,7 @@ module Twist
         def link
           list_class = part == "frontmatter" ? "list-[lower-roman]" : "list-decimal"
           helpers.tag.ol(class: list_class + " list-inside inline-block") do
-            helpers.tag.li(value: position, class: "underline") { title }
+            helpers.tag.li(value: position) { title }
           end
         end
         def header

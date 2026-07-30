@@ -4,13 +4,13 @@
 
     <div class="space-y-4">
       <div>
-        <%= f.label :email, class: "block font-medium mb-2" %>
-        <%= f.email_field :email, class: "w-full border border-gray-300 p-2 mb-2", autocomplete: "email" %>
+        <%= f.label :email, class: "form-label" %>
+        <%= f.email_field :email, class: "form-input", autocomplete: "email" %>
       </div>
 
       <% if books.any? %>
         <fieldset>
-          <legend class="block font-medium mb-2">Give them access to</legend>
+          <legend class="form-label">Give them access to</legend>
           <% books.each do |book| %>
             <label class="block">
               <input type="checkbox" name="invite[book_ids][]" value="<%= book.id %>">

@@ -5,7 +5,11 @@ module Twist
         include Deps["repos.book_repo"]
 
         def call(permalink:)
-          book_repo.find_by_permalink(permalink)
+          book = book_repo.by_permalink(permalink)
+
+          step Failure(:book_not_found) if book.nil?
+
+          book
         end
       end
     end

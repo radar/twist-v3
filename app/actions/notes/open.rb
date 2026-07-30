@@ -11,8 +11,8 @@ module Twist
         def handle(request, response)
           book = book_repo.find_by_permalink(request.params[:book_permalink])
 
-          unless book_repo.permitted?(book:, user: response[:current_user])
-            request.flash[:error] = "You do not have permission to open notes for this book."
+          unless book_repo.author?(book:, user: response[:current_user])
+            request.flash[:error] = "Only this book's authors can re-open notes."
             response.redirect_to(routes.path(:book, permalink: book.permalink))
           end
 

@@ -1,14 +1,17 @@
+<h1>Your books</h1>
+
 <% if books.any? %>
-  <% books.each do |book| %>
-    <div className="mb-4">
-      <h2>
-        <%= link_to routes.path(:book, permalink: book.permalink) do %>
-          <%= book.title %>
+  <div class="book-list">
+    <% books.each do |book| %>
+      <a href="<%= book_path(book) %>" class="book-card">
+        <span class="book-card-title"><%= book.title %></span>
+        <% if book.blurb %>
+          <span class="book-card-blurb"><%= book.blurb %></span>
         <% end %>
-      </h2>
-      <span className="text-gray-800"><%= book.blurb %></span>
-    </div>
-  <% end %>
+        <span class="book-card-cta">Open book &rarr;</span>
+      </a>
+    <% end %>
+  </div>
 <% else %>
   <em class="text-gray-600">No books available at the moment. Perhaps you need to ask someone for access?</em>
 <% end %>

@@ -3,12 +3,12 @@
     <h1 class="text-2xl font-bold mb-4">Login to Twist</h1>
     <div class="space-y-4">
       <div>
-        <%= f.label :email, class: "block font-medium mb-2" %>
-        <%= f.email_field :email, class: "w-full border border-gray-300 p-2 mb-2", autocomplete: "email" %>
+        <%= f.label :email, class: "form-label" %>
+        <%= f.email_field :email, class: "form-input", autocomplete: "email" %>
       </div>
       <div>
-        <%= f.label :password, class: "block font-medium mb-2" %>
-        <%= f.password_field :password, class: "w-full border border-gray-300 p-2 mb-2", autocomplete: "current-password" %>
+        <%= f.label :password, class: "form-label" %>
+        <%= f.password_field :password, class: "form-input", autocomplete: "current-password" %>
       </div>
     </div>
     <div>
