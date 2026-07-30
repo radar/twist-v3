@@ -1,13 +1,27 @@
+<%#
+  Pass notes_frame: true to render the note panel inline underneath the paragraph
+  instead of sending the reader off to the element's own page. See app/assets/js/app.js.
+%>
+<% inline_notes = defined?(notes_frame) && notes_frame %>
 <div class="relative element">
   <span class="note-button" id="note_button_<%= element.id %>">
     <a
       href='<%= element_path(book: book, chapter: chapter, id: element.id) %>'
       class="note-pill <%= element.note_count == 0 ? 'note-pill-empty' : '' %>"
       aria-label="<%= element.pretty_note_count %> on this paragraph"
+      <% if inline_notes %>
+        data-turbo="true"
+        data-turbo-frame="element_notes_<%= element.id %>"
+        data-note-toggle
+        aria-expanded="false"
+      <% end %>
     >
       <i class="fa-regular fa-comment"></i>
       <span class="note-count"><%= element.note_count %></span>
     </a>
   </span>
   <%= render "elements/content", element: element %>
+  <% if inline_notes %>
+    <turbo-frame id="element_notes_<%= element.id %>" class="element-notes"></turbo-frame>
+  <% end %>
 </div>

@@ -26,7 +26,8 @@ module Twist
               book_permalink: request.params[:book_permalink],
               chapter_permalink: request.params[:chapter_permalink],
               id: request.params[:element_id]
-            )
+            ),
+            status: 303
           )
         end
       end

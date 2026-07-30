@@ -33,7 +33,7 @@
     </h2>
     <div class="elements">
       <% elements.each do |element| %>
-        <%= render "elements/element", book: book, chapter: chapter, element: element %>
+        <%= render "elements/element", book: book, chapter: chapter, element: element, notes_frame: true %>
       <% end %>
     </div>
 

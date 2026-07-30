@@ -35,7 +35,8 @@ RSpec.describe Twist::Actions::Notes::Open do
 
       response = subject.call(env)
 
-      expect(response.status).to eq(302)
+      # 303 so Turbo re-issues the follow-up request as a GET
+      expect(response.status).to eq(303)
     end
   end
 
