@@ -12,17 +12,21 @@ module Twist
       end
 
       def find_by_permalink(permalink)
-        books.where(permalink: permalink).limit(1).one!
+        require_permalink!(permalink)
+        books.where(permalink: permalink).one!
       end
 
       # Like #find_by_permalink, but returns nil instead of raising when no
       # book matches the permalink.
       def by_permalink(permalink)
-        books.where(permalink: permalink).limit(1).one
+        return nil if permalink.nil? || permalink.empty?
+
+        books.where(permalink: permalink).one
       end
 
       def find_by_permalink_with_latest_commit(permalink)
-        books.combine(default_branch: :latest_commit).where(permalink: permalink).limit(1).one!
+        require_permalink!(permalink)
+        books.combine(default_branch: :latest_commit).where(permalink: permalink).one!
       end
 
       def add_branch(book, data)
@@ -62,6 +66,16 @@ module Twist
         permissions
           .changeset(:create, { book_id: book.id, user_id: user.id, author: author })
           .commit
+      end
+
+      private
+
+      # `permalink` is nullable, so a nil lookup would quietly match whichever
+      # book happens to have no permalink rather than finding nothing.
+      def require_permalink!(permalink)
+        return unless permalink.nil? || permalink.empty?
+
+        raise ArgumentError, "permalink must be present"
       end
     end
   end

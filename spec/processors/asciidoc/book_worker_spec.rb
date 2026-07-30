@@ -52,6 +52,7 @@ module Twist
         context "with the Rails book", integration: true do
           let!(:book) do
             book_repo.create(
+              permalink: "rails-4-in-action",
               title: "Rails 4 in Action",
               github_user: "rubysherpas",
               github_repo: "rails_book",

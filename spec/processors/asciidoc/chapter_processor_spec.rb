@@ -14,6 +14,7 @@ module Twist
 
         let!(:book) do
           book_repo.create(
+            permalink: "asciidoc-book-test",
             title: "Asciidoc Book Test",
             github_user: "radar",
             github_repo: "asciidoc_book_test",
