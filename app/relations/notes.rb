@@ -18,12 +18,20 @@ module Twist
         .order(Sequel.desc(:number))
       end
 
-      # Open (i.e. not closed) notes for the chapters belonging to a single commit.
-      def open_for_commit(commit_id)
+      # Every note against the chapters belonging to a single commit.
+      def for_commit(commit_id)
         inner_join(:elements, id: notes[:element_id])
           .inner_join(:chapters, id: elements[:chapter_id])
           .where(chapters[:commit_id] => commit_id, chapters[:superseded] => false)
-          .where { (state.is(nil)) | (state.is("open")) }
+      end
+
+      # Open (i.e. not closed) notes for the chapters belonging to a single commit.
+      def open_for_commit(commit_id)
+        for_commit(commit_id).where { (state.is(nil)) | (state.is("open")) }
+      end
+
+      def closed_for_commit(commit_id)
+        for_commit(commit_id).where(notes[:state] => "closed")
       end
 
       def open_counts_by_chapter(commit_id)
@@ -42,7 +50,17 @@ module Twist
       end
 
       def open_by_commit(commit_id)
-        open_for_commit(commit_id)
+        with_authors(open_for_commit(commit_id))
+      end
+
+      def closed_by_commit(commit_id)
+        with_authors(closed_for_commit(commit_id))
+      end
+
+      private
+
+      def with_authors(relation)
+        relation
           .combine(:user)
           .combine(comments: :user)
           .order(Sequel.desc(notes[:number]))

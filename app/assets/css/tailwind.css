@@ -511,6 +511,44 @@ turbo-frame[hidden] {
   @apply rounded-full bg-blue-600 px-2 py-0.5 text-xs font-bold text-white;
 }
 
+/* notes/index — open vs closed switch */
+.notes-tabs {
+  @apply mb-6 flex items-center gap-2;
+}
+
+.notes-tab {
+  @apply inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm font-semibold no-underline;
+  border-color: var(--card-border);
+  background-color: var(--card-bg);
+  color: var(--text-muted);
+  transition: background-color 200ms, border-color 200ms, color 200ms;
+}
+
+.notes-tab:hover {
+  @apply no-underline;
+  background-color: var(--surface-muted);
+  color: var(--text-strong);
+}
+
+.notes-tab-active,
+.notes-tab-active:hover {
+  @apply border-blue-200 bg-blue-50 text-blue-700 no-underline;
+}
+
+.notes-tab .notes-tab-count {
+  @apply rounded-full px-2 py-0.5 text-xs font-bold;
+  background-color: var(--surface-muted);
+  color: var(--text-muted);
+}
+
+.notes-tab-active .notes-tab-count {
+  @apply bg-blue-600 text-white;
+}
+
+.notes-empty {
+  color: var(--text-muted);
+}
+
 .chapter-list {
   @apply mb-8 list-none divide-y divide-gray-200 border;
   border-color: var(--card-border);
@@ -797,17 +835,9 @@ turbo-frame[hidden] {
   color: var(--text-muted);
 }
 
-.people-row .people-row-actions {
-  @apply ml-auto;
-}
-
-.people-row .people-row-note {
-  @apply text-sm;
-  color: var(--text-muted);
-}
-
+/* Badge and its button sit together against the right edge of the row. */
 .people-role {
-  @apply rounded-full border px-2 py-0.5 text-xs font-semibold;
+  @apply ml-auto rounded-full border px-2 py-0.5 text-xs font-semibold;
 }
 
 .people-role-author {
@@ -819,7 +849,7 @@ turbo-frame[hidden] {
 }
 
 .people-role-pending {
-  @apply ml-auto border-amber-200 bg-amber-50 text-amber-700;
+  @apply border-amber-200 bg-amber-50 text-amber-700;
 }
 
 /* ---------- Dark mode ---------- */
@@ -925,6 +955,11 @@ turbo-frame[hidden] {
 
   .people-role-pending {
     @apply border-amber-900 bg-amber-950 text-amber-200;
+  }
+
+  .notes-tab-active,
+  .notes-tab-active:hover {
+    @apply border-blue-900 bg-blue-950 text-blue-200;
   }
 
   .note-pill,

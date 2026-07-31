@@ -9,7 +9,18 @@
     <%= render "books/commit_info", branch: book.default_branch, commit: commit %>
   </header>
 
-  <h2>Open notes</h2>
+  <h2><%= status == "closed" ? "Closed notes" : "Open notes" %></h2>
+
+  <nav class="notes-tabs">
+    <%= link_to book_notes_path(book), class: "notes-tab #{"notes-tab-active" if status != "closed"}" do %>
+      Open
+      <span class="notes-tab-count"><%= open_count %></span>
+    <% end %>
+    <%= link_to book_notes_path(book, status: "closed"), class: "notes-tab #{"notes-tab-active" if status == "closed"}" do %>
+      Closed
+      <span class="notes-tab-count"><%= closed_count %></span>
+    <% end %>
+  </nav>
 
   <% if notes.any? %>
     <% notes.each do |note| %>
@@ -38,6 +49,8 @@
       </div>
     <% end %>
   <% else %>
-    <em class="text-gray-600">No open notes for this book.</em>
+    <em class="notes-empty">
+      <%= status == "closed" ? "No notes have been closed on this book yet." : "No open notes for this book." %>
+    </em>
   <% end %>
 </div>

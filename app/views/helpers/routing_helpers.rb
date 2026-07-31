@@ -6,8 +6,10 @@ module Twist
           routes.path(:book, permalink: book.permalink)
         end
 
-        def book_notes_path(book)
-          routes.path(:book_notes, book_permalink: book.permalink)
+        def book_notes_path(book, status: nil)
+          path = routes.path(:book_notes, book_permalink: book.permalink)
+
+          status.nil? ? path : "#{path}?status=#{status}"
         end
 
         def book_people_path(book)

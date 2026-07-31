@@ -30,9 +30,8 @@
         </span>
 
         <div class="people-row-actions">
-          <% if person.author && author_count <= 1 %>
-            <span class="people-row-note">Last author &mdash; make someone else an author first</span>
-          <% else %>
+          <%# The last author can't be demoted, so don't offer the button. %>
+          <% unless person.author && author_count <= 1 %>
             <%= form_for :person, book_person_path(book, person), method: :patch, class: "inline-block" do |f| %>
               <%= f.hidden_field :author, value: person.author ? "false" : "true" %>
               <%= f.submit person.author ? "Remove author" : "Make author", class: "btn btn-sm #{person.author ? "btn-outline" : "btn-blue"}" %>

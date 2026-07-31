@@ -63,7 +63,6 @@ RSpec.describe "People", :db, type: :request do
       get "/books/#{book.permalink}/people"
 
       expect(last_response.body).not_to include("Remove author")
-      expect(last_response.body).to include("Last author")
     end
 
     it "offers a remove button once a second author exists" do
@@ -73,7 +72,6 @@ RSpec.describe "People", :db, type: :request do
       get "/books/#{book.permalink}/people"
 
       expect(last_response.body).to include("Remove author")
-      expect(last_response.body).not_to include("Last author")
     end
 
     it "lists pending invites for this book only" do
