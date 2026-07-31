@@ -727,6 +727,20 @@ turbo-frame[hidden] {
   @apply text-sm;
 }
 
+.note-comment-form {
+  @apply mt-3 space-y-2 border-l-2 pl-4 text-sm;
+  border-color: var(--card-border);
+}
+
+.note-comment-form label {
+  @apply mb-1 block font-medium;
+  color: var(--text-muted);
+}
+
+.note-comment-form textarea {
+  @apply min-h-16;
+}
+
 /* Wider variant for pages without a note gutter (book overview). */
 .reading-column-wide {
   @apply mx-auto px-4;

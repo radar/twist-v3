@@ -24,6 +24,7 @@ module Twist
     patch "#{note_prefix}/:id/open", to: "notes.open", as: :open_note
     patch "#{note_prefix}/:id", to: "notes.update", as: :update_note
     get "#{note_prefix}/:id/edit", to: "notes.edit", as: :edit_note
+    post "#{note_prefix}/:id/comments", to: "comments.create", as: :create_note_comment
 
     get "/invites/new", to: "invites.new", as: :new_invite
     post "/invites", to: "invites.create", as: :create_invite
