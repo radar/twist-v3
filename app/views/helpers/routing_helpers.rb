@@ -61,6 +61,10 @@ module Twist
         def update_note_path(note)
           routes.path(:update_note, book_permalink:, chapter_permalink:, element_id:, id: note.id)
         end
+
+        def create_note_comment_path(note)
+          routes.path(:create_note_comment, book_permalink:, chapter_permalink:, element_id:, id: note.id)
+        end
       end
     end
   end

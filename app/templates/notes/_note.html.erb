@@ -46,5 +46,28 @@
         <% end %>
       </div>
     <% end %>
+
+    <% if can_comment_on_note?(book: book) %>
+      <%# Break out of the notes frame: the flash lives in the layout, outside it,
+          and this partial is also rendered on the book-wide notes page, which has
+          no notes frame for a redirect to land in. %>
+      <%= form_for :comment, create_note_comment_path(note),
+            class: "note-comment-form",
+            data: { turbo_frame: "_top" } do |f| %>
+        <div>
+          <%# A page can carry many of these forms, so the ids are per note. %>
+          <%= f.label for: "text-#{note.id}" do %>
+            Reply to this note (Markdown enabled)
+          <% end %>
+          <%= f.text_area :text, class: "form-textarea", id: "comment-text-#{note.id}" %>
+        </div>
+
+        <input
+          type="submit"
+          class="btn btn-blue btn-sm"
+          value="Add Comment"
+        />
+      <% end %>
+    <% end %>
   </div>
 </div>

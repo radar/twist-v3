@@ -40,10 +40,23 @@ module Twist
         note.user_id == current_user.id || author_of?(book)
       end
 
+      # Replying is more open than editing: anyone with access to the book can
+      # comment on any note on it, so authors and readers can hold a conversation.
+      def can_comment_on_note?(book:)
+        return false unless current_user
+
+        permissions[book.id] = book_repo.permitted?(book: book, user: current_user) unless permissions.key?(book.id)
+        permissions[book.id]
+      end
+
       private
 
       def authorships
         @authorships ||= {}
+      end
+
+      def permissions
+        @permissions ||= {}
       end
     end
   end
