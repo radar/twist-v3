@@ -822,6 +822,91 @@ turbo-frame[hidden] {
   @apply ml-auto border-amber-200 bg-amber-50 text-amber-700;
 }
 
+/* ---------- Webhooks ---------- */
+
+.webhooks-subtitle {
+  color: var(--text-muted);
+}
+
+.webhook-url {
+  @apply overflow-x-auto border px-4 py-3 text-sm;
+  font-family: "Source Code Pro", monospace;
+  border-color: var(--card-border);
+  border-radius: var(--card-radius);
+  background-color: var(--surface-muted);
+  color: var(--text-strong);
+}
+
+.webhook-steps {
+  @apply my-4 list-decimal space-y-2 pl-6;
+}
+
+.webhook-steps code,
+.webhook-table code {
+  @apply rounded px-1 text-sm;
+  font-family: "Source Code Pro", monospace;
+  background-color: var(--surface-muted);
+}
+
+.webhook-table-scroll {
+  @apply mb-8 overflow-x-auto border;
+  border-color: var(--card-border);
+  border-radius: var(--card-radius);
+  background-color: var(--card-bg);
+  box-shadow: var(--card-shadow);
+}
+
+.webhook-table {
+  @apply w-full text-left text-sm;
+  border-collapse: collapse;
+}
+
+.webhook-table th {
+  @apply px-4 py-2 text-xs font-semibold uppercase tracking-wide;
+  color: var(--text-muted);
+  background-color: var(--surface-muted);
+}
+
+.webhook-table td {
+  @apply px-4 py-3 align-top;
+  border-top: 1px solid var(--card-border);
+  color: var(--text-strong);
+}
+
+.webhook-muted {
+  @apply text-xs;
+  color: var(--text-muted);
+}
+
+.webhook-error {
+  @apply mt-1 text-xs;
+  color: var(--color-red-600);
+}
+
+.webhook-status {
+  @apply rounded-full border px-2 py-0.5 text-xs font-semibold;
+}
+
+.webhook-status-pending {
+  @apply border-gray-200 bg-gray-50 text-gray-600;
+}
+
+.webhook-status-enqueued {
+  @apply border-amber-200 bg-amber-50 text-amber-700;
+}
+
+.webhook-status-running {
+  @apply border-blue-200 bg-blue-50 text-blue-700;
+}
+
+.webhook-status-succeeded {
+  @apply border-green-200 bg-green-50 text-green-700;
+}
+
+.webhook-status-failed {
+  @apply border-red-200 bg-red-50 text-red-700;
+}
+
 /* ---------- Dark mode ---------- */
 
 @media (prefers-color-scheme: dark) {
@@ -925,6 +1010,30 @@ turbo-frame[hidden] {
 
   .people-role-pending {
     @apply border-amber-900 bg-amber-950 text-amber-200;
+  }
+
+  .webhook-status-pending {
+    @apply border-gray-700 bg-gray-800 text-gray-300;
+  }
+
+  .webhook-status-enqueued {
+    @apply border-amber-900 bg-amber-950 text-amber-200;
+  }
+
+  .webhook-status-running {
+    @apply border-blue-900 bg-blue-950 text-blue-200;
+  }
+
+  .webhook-status-succeeded {
+    @apply border-green-900 bg-green-950 text-green-200;
+  }
+
+  .webhook-status-failed {
+    @apply border-red-900 bg-red-950 text-red-200;
+  }
+
+  .webhook-error {
+    @apply text-red-400;
   }
 
   .note-pill,

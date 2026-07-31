@@ -14,18 +14,25 @@ RSpec.describe Twist::Actions::Books::Receive do
         repository: {
           full_name: "radar/exploding_rails",
         },
-      }.to_json
+      }.to_json,
+      "HTTP_X_GITHUB_EVENT" => "push",
+      "HTTP_X_GITHUB_DELIVERY" => "delivery-1",
     }
   end
 
   context "when the book exists" do
     let(:receive_book) do
-      ->(permalink:, branch_name:) { Success(true) }
+      ->(permalink:, branch_name:, event:, delivery_id:) { Success(true) }
     end
 
     it "hands the book off to the receive operation" do
       expect(receive_book).to receive(:call)
-        .with(permalink: "exploding-rails", branch_name: "refs/heads/master")
+        .with(
+          permalink: "exploding-rails",
+          branch_name: "refs/heads/master",
+          event: "push",
+          delivery_id: "delivery-1"
+        )
         .and_return(Success(true))
 
       response = subject.call(params)
@@ -35,7 +42,7 @@ RSpec.describe Twist::Actions::Books::Receive do
 
   context "when the book does not exist" do
     let(:receive_book) do
-      ->(permalink:, branch_name:) { Failure(:book_not_found) }
+      ->(permalink:, branch_name:, event:, delivery_id:) { Failure(:book_not_found) }
     end
 
     it "reports back the book cannot be found" do

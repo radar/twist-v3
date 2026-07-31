@@ -11,8 +11,18 @@ module Twist
         include Sidekiq::Worker
 
         include Deps['repos.book_repo']
+        include Deps['repos.webhook_repo']
+        include WebhookTracking
 
         def perform(payload)
+          track_webhook(payload["webhook_id"]) do
+            process(payload)
+          end
+        end
+
+        private
+
+        def process(payload)
           book = book_repo.find_by_permalink(payload["permalink"])
           username = book.github_user
           repo = book.github_repo
@@ -37,8 +47,6 @@ module Twist
             Chapter.new(book, commit, git.local_path, chapter_element, index + 1).process
           end
         end
-
-        private
 
         def find_book(permalink)
           book = book_repo.find_by_permalink(permalink)

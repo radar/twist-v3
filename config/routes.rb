@@ -5,9 +5,11 @@ module Twist
     root to: "books.index"
     get "/books", to: "books.index", as: :books
     get "/books/:permalink", to: "books.show", as: :book
-    post "/books/:permalink/receive", to: "books.receive"
+    post "/books/:permalink/receive", to: "books.receive", as: :book_receive
 
     get "/books/:book_permalink/notes", to: "notes.index", as: :book_notes
+
+    get "/books/:book_permalink/webhooks", to: "webhooks.index", as: :book_webhooks
 
     get "/books/:book_permalink/people", to: "people.index", as: :book_people
     patch "/books/:book_permalink/people/:user_id", to: "people.update", as: :book_person
