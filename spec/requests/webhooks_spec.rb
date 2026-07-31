@@ -56,6 +56,26 @@ RSpec.describe "Webhooks", :db, type: :request do
       expect(last_response.body).to include("Just the push event")
     end
 
+    it "says unsigned deliveries are accepted while there is no secret" do
+      sign_in(author)
+      get "/books/#{book.permalink}/webhooks"
+
+      expect(last_response.body).to include("This book has no webhook secret")
+      expect(last_response.body).to include("Generate a secret")
+      expect(last_response.body).to include("Leave <strong>Secret</strong> empty for now")
+    end
+
+    it "shows the secret to an author so they can paste it into GitHub" do
+      secret = book_repo.rotate_webhook_secret(book)
+
+      sign_in(author)
+      get "/books/#{book.permalink}/webhooks"
+
+      expect(last_response.body).to include(secret)
+      expect(last_response.body).to include("Paste the secret above into")
+      expect(last_response.body).not_to include("This book has no webhook secret")
+    end
+
     it "says so when nothing has been received yet" do
       sign_in(author)
       get "/books/#{book.permalink}/webhooks"
@@ -107,6 +127,56 @@ RSpec.describe "Webhooks", :db, type: :request do
       expect(last_response.body).not_to include("cccccccc")
 
       expect(pending_hook.job_status).to eq("pending")
+    end
+  end
+
+  describe "POST /books/:book_permalink/webhooks/secret" do
+    it "redirects when not signed in" do
+      post "/books/#{book.permalink}/webhooks/secret"
+
+      expect(last_response.status).to eq(302)
+      expect(last_response.headers["Location"]).to eq("/login/new")
+      expect(book_repo.webhook_secret_for(book)).to be_nil
+    end
+
+    it "does not let a non-author rotate the secret" do
+      sign_in(reader)
+      post "/books/#{book.permalink}/webhooks/secret"
+
+      expect(last_response.status).to eq(302)
+      expect(last_response.headers["Location"]).to eq("/books/#{book.permalink}")
+      expect(book_repo.webhook_secret_for(book)).to be_nil
+    end
+
+    it "generates a secret for an author and shows it on the webhooks page" do
+      sign_in(author)
+      post "/books/#{book.permalink}/webhooks/secret"
+
+      expect(last_response.status).to eq(302)
+      expect(last_response.headers["Location"]).to eq("/books/#{book.permalink}/webhooks")
+
+      secret = book_repo.webhook_secret_for(book)
+      expect(secret).to match(/\A[0-9a-f]{40}\z/)
+
+      follow_redirect!
+      expect(last_response.body).to include(secret)
+      expect(last_response.body).to include("Webhook secret generated")
+    end
+
+    it "replaces an existing secret when rotated" do
+      original = book_repo.rotate_webhook_secret(book)
+
+      sign_in(author)
+      post "/books/#{book.permalink}/webhooks/secret"
+
+      rotated = book_repo.webhook_secret_for(book)
+      expect(rotated).not_to eq(original)
+      expect(rotated).to match(/\A[0-9a-f]{40}\z/)
+
+      follow_redirect!
+      expect(last_response.body).to include(rotated)
+      expect(last_response.body).not_to include(original)
+      expect(last_response.body).to include("New webhook secret generated")
     end
   end
 end

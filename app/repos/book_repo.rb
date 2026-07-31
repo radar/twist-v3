@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'default_timestamps'
+require 'securerandom'
 
 module Twist
   module Repos
@@ -34,6 +35,28 @@ module Twist
           .changeset(:create, data.merge(book_id: book.id))
           .map(:add_timestamps)
           .commit
+      end
+
+      # The shared secret GitHub signs this book's webhook deliveries with, or
+      # nil when the book has never had one set.
+      def webhook_secret_for(book)
+        books.where(id: book.id).one!.webhook_secret
+      end
+
+      # Generates a fresh webhook secret for the book and returns it. Any
+      # deliveries signed with the previous secret stop being accepted.
+      def rotate_webhook_secret(book)
+        secret = SecureRandom.hex(20)
+        set_webhook_secret(book: book, secret: secret)
+        secret
+      end
+
+      def set_webhook_secret(book:, secret:)
+        books
+          .where(id: book.id)
+          .update(webhook_secret: secret, updated_at: Time.now.utc)
+
+        secret
       end
 
       def permitted?(book:, user:)

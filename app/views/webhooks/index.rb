@@ -17,6 +17,12 @@ module Twist
         expose :webhooks do |book|
           webhook_repo.recent_for_book(book)
         end
+
+        # The secret GitHub should sign deliveries with, if this book has one.
+        # Nil means unsigned deliveries are still accepted.
+        expose :webhook_secret do |book|
+          book.webhook_secret
+        end
       end
     end
   end
