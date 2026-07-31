@@ -9,10 +9,6 @@ module Twist
         notes.by_element(element.id).to_a
       end
 
-      def open_count_by_commit(commit)
-        notes.open_for_commit(commit.id).count
-      end
-
       # => { chapter_id => open note count }
       def open_counts_by_chapter(commit)
         notes
@@ -21,16 +17,20 @@ module Twist
           .each_with_object({}) { |row, counts| counts[row[:chapter_id]] = row[:open_note_count] }
       end
 
-      def closed_count_by_commit(commit)
-        notes.closed_for_commit(commit.id).count
+      def open_count_by_book(book)
+        notes.open_for_book(book.id).count
       end
 
-      def open_by_commit(commit)
-        notes.open_by_commit(commit.id).combine(element: [:chapter, :image]).to_a
+      def closed_count_by_book(book)
+        notes.closed_for_book(book.id).count
       end
 
-      def closed_by_commit(commit)
-        notes.closed_by_commit(commit.id).combine(element: [:chapter, :image]).to_a
+      def open_by_book(book)
+        notes.open_by_book(book.id).combine(element: [:chapter, :image]).to_a
+      end
+
+      def closed_by_book(book)
+        notes.closed_by_book(book.id).combine(element: [:chapter, :image]).to_a
       end
 
       def find_by_book_and_id(book, id)

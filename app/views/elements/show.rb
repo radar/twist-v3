@@ -14,12 +14,15 @@ module Twist
           book_repo.find_by_permalink_with_latest_commit(book_permalink)
         end
 
-        expose :commit do |book_permalink:|
-          commit_repo.latest_by_book_permalink(book_permalink:)
+        # Notes stay attached to the element of the commit they were left against,
+        # so an element link can point at any commit of the book. Resolve the
+        # chapter from the element itself rather than from the latest commit.
+        expose :chapter do |id:|
+          chapter_repo.by_id(element_repo.chapter_id_for(id))
         end
 
-        expose :chapter do |commit, chapter_permalink:|
-          chapter_repo.find_by_permalink_and_commit(permalink: chapter_permalink, commit: commit)
+        expose :commit do |chapter|
+          commit_repo.by_id_with_branch(chapter.commit_id)
         end
 
         expose :element, decorate: true  do |chapter, id:|

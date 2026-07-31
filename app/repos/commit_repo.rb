@@ -9,6 +9,10 @@ module Twist
         commits.by_pk(id).one
       end
 
+      def by_id_with_branch(id)
+        commits.by_pk(id).combine(:branch).one!
+      end
+
       def latest_for_branch(branch_id)
         by_branch(branch_id)
           .order { created_at.desc }

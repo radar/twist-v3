@@ -5,6 +5,7 @@ module Twist
     class Notes < Twist::DB::Relation
       schema :notes, infer: true do
         associations do
+          belongs_to :book
           belongs_to :element
           belongs_to :user
           has_many :comments
@@ -30,10 +31,6 @@ module Twist
         for_commit(commit_id).where { (state.is(nil)) | (state.is("open")) }
       end
 
-      def closed_for_commit(commit_id)
-        for_commit(commit_id).where(notes[:state] => "closed")
-      end
-
       def open_counts_by_chapter(commit_id)
         notes_relation = notes
         chapters_relation = chapters
@@ -49,12 +46,27 @@ module Twist
           .order(chapters_relation[:id])
       end
 
-      def open_by_commit(commit_id)
-        with_authors(open_for_commit(commit_id))
+      # Every note on a book, whatever commit it was left against. Notes hang off
+      # the elements of the commit they were left on, so anything commit-scoped
+      # loses them the moment the book moves on to a new commit.
+      def for_book(book_id)
+        where(notes[:book_id] => book_id)
       end
 
-      def closed_by_commit(commit_id)
-        with_authors(closed_for_commit(commit_id))
+      def open_for_book(book_id)
+        for_book(book_id).where { (state.is(nil)) | (state.is("open")) }
+      end
+
+      def closed_for_book(book_id)
+        for_book(book_id).where(notes[:state] => "closed")
+      end
+
+      def open_by_book(book_id)
+        with_authors(open_for_book(book_id))
+      end
+
+      def closed_by_book(book_id)
+        with_authors(closed_for_book(book_id))
       end
 
       private

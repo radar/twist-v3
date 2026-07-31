@@ -94,7 +94,8 @@ CREATE TABLE public.notes (
     user_id integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    number integer
+    number integer,
+    book_id integer NOT NULL
 );
 
 
@@ -516,6 +517,13 @@ CREATE UNIQUE INDEX invites_token_index ON public.invites USING btree (token);
 
 
 --
+-- Name: notes_book_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX notes_book_id_index ON public.notes USING btree (book_id);
+
+
+--
 -- Name: branches branches_book_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -612,6 +620,14 @@ ALTER TABLE ONLY public.invites
 
 
 --
+-- Name: notes notes_book_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notes
+    ADD CONSTRAINT notes_book_id_fkey FOREIGN KEY (book_id) REFERENCES public.books(id) ON DELETE CASCADE;
+
+
+--
 -- Name: notes notes_element_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -682,4 +698,5 @@ INSERT INTO schema_migrations (filename) VALUES
 ('20210113013411_unique_permissions.rb'),
 ('20210121002429_add_author_to_permissions.rb'),
 ('20220629224149_add_is_public_to_books.rb'),
-('20260729000001_create_invites.rb');
+('20260729000001_create_invites.rb'),
+('20260731010000_add_book_id_to_notes.rb');

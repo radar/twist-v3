@@ -35,9 +35,10 @@ RSpec.describe "Book notes", :db, type: :request do
     element_repo.create(chapter_id: chapter.id, tag: "p", content: "<p>Pairing is a super power.</p>")
   end
 
-  def create_note(text:, state:, number:)
+  def create_note(text:, state:, number:, on: element)
     note_repo.create(
-      element_id: element.id,
+      book_id: book.id,
+      element_id: on.id,
       user_id: author.id,
       text: text,
       state: state,
@@ -53,6 +54,66 @@ RSpec.describe "Book notes", :db, type: :request do
     create_note(text: "From before the state column", state: nil, number: 3)
 
     post "/sessions", session: {email: author.email, password: "password123"}
+  end
+
+  describe "notes left against an earlier commit" do
+    let(:second_commit) do
+      commit_repo.create(branch_id: branch.id, sha: "def456", message: "Second commit")
+    end
+
+    let(:second_chapter) do
+      chapter_repo.create(
+        commit_id: second_commit.id,
+        title: "Pairing",
+        permalink: "pairing",
+        position: 1,
+        part: "mainmatter",
+        file_name: "pairing.md"
+      )
+    end
+
+    let(:second_element) do
+      element_repo.create(
+        chapter_id: second_chapter.id,
+        tag: "p",
+        content: "<p>Pairing is still a super power.</p>"
+      )
+    end
+
+    before do
+      second_element
+      create_note(text: "Left on the newest commit", state: "open", number: 4, on: second_element)
+    end
+
+    it "lists notes from every commit of the book" do
+      get "/books/#{book.permalink}/notes"
+
+      expect(last_response).to be_successful
+      expect(last_response.body).to include("Left on the newest commit")
+      expect(last_response.body).to include("Still needs work")
+      expect(last_response.body).to include("From before the state column")
+    end
+
+    it "counts them all on the tabs" do
+      get "/books/#{book.permalink}/notes"
+
+      expect(last_response.body).to include("notes-tab-count\">3")
+      expect(last_response.body).to include("notes-tab-count\">1")
+    end
+
+    it "links a superseded element back to its own commit" do
+      get "/books/#{book.permalink}/notes"
+
+      expect(last_response.body).to include(
+        "/books/#{book.permalink}/chapters/pairing/elements/#{element.id}"
+      )
+
+      get "/books/#{book.permalink}/chapters/pairing/elements/#{element.id}"
+
+      expect(last_response).to be_successful
+      expect(last_response.body).to include("Pairing is a super power.")
+      expect(last_response.body).to include("abc123")
+    end
   end
 
   describe "GET /books/:book_permalink/notes" do

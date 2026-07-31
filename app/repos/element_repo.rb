@@ -13,6 +13,10 @@ module Twist
         elements.where(chapter_id:).where(tag:).to_a
       end
 
+      def chapter_id_for(id)
+        elements.by_pk(id).one!.chapter_id
+      end
+
       def find_by_chapter_and_id(chapter:, id:)
         elements
           .by_chapter(chapter.id)

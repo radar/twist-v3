@@ -17,20 +17,20 @@ module Twist
           book.default_branch.latest_commit
         end
 
-        expose :notes, decorate: true do |commit, status|
+        expose :notes, decorate: true do |book, status|
           if status == "closed"
-            note_repo.closed_by_commit(commit)
+            note_repo.closed_by_book(book)
           else
-            note_repo.open_by_commit(commit)
+            note_repo.open_by_book(book)
           end
         end
 
-        expose :open_count do |commit|
-          note_repo.open_count_by_commit(commit)
+        expose :open_count do |book|
+          note_repo.open_count_by_book(book)
         end
 
-        expose :closed_count do |commit|
-          note_repo.closed_count_by_commit(commit)
+        expose :closed_count do |book|
+          note_repo.closed_count_by_book(book)
         end
       end
     end

@@ -28,6 +28,7 @@ module Twist
             request.params[:note].merge(
               number: note_count + 1,
               state: "open",
+              book_id: book.id,
               element_id: request.params[:element_id],
               user_id: response[:current_user].id,
             )
