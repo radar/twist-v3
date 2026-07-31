@@ -10,6 +10,7 @@ module Twist
     get "/books/:book_permalink/notes", to: "notes.index", as: :book_notes
 
     get "/books/:book_permalink/webhooks", to: "webhooks.index", as: :book_webhooks
+    post "/books/:book_permalink/webhooks/secret", to: "webhooks.rotate_secret", as: :book_webhook_secret
 
     get "/books/:book_permalink/people", to: "people.index", as: :book_people
     patch "/books/:book_permalink/people/:user_id", to: "people.update", as: :book_person

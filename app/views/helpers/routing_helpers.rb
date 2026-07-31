@@ -20,6 +20,10 @@ module Twist
           routes.path(:book_webhooks, book_permalink: book.permalink)
         end
 
+        def book_webhook_secret_path(book)
+          routes.path(:book_webhook_secret, book_permalink: book.permalink)
+        end
+
         def book_person_path(book, person)
           routes.path(:book_person, book_permalink: book.permalink, user_id: person.id)
         end

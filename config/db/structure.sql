@@ -134,7 +134,8 @@ CREATE TABLE public.books (
     blurb text,
     github_user text,
     github_repo text,
-    is_public boolean DEFAULT false
+    is_public boolean DEFAULT false,
+    webhook_secret text
 );
 
 
@@ -765,4 +766,5 @@ INSERT INTO schema_migrations (filename) VALUES
 ('20220629224149_add_is_public_to_books.rb'),
 ('20260729000001_create_invites.rb'),
 ('20260731000001_create_webhooks.rb'),
-('20260731010000_add_book_id_to_notes.rb');
+('20260731010000_add_book_id_to_notes.rb'),
+('20260731020000_add_webhook_secret_to_books.rb');

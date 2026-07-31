@@ -867,6 +867,25 @@ turbo-frame[hidden] {
   color: var(--text-strong);
 }
 
+.webhook-secret {
+  @apply overflow-x-auto border px-4 py-3 text-sm;
+  font-family: "Source Code Pro", monospace;
+  border-color: var(--card-border);
+  border-radius: var(--card-radius);
+  background-color: var(--surface-muted);
+  color: var(--text-strong);
+}
+
+.webhook-secret-actions {
+  @apply my-4 flex flex-wrap items-center gap-3;
+}
+
+.webhook-unsigned {
+  @apply border-l-4 py-2 pl-4;
+  border-color: var(--color-amber-400);
+  color: var(--text-strong);
+}
+
 .webhook-steps {
   @apply my-4 list-decimal space-y-2 pl-6;
 }

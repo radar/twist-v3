@@ -15,6 +15,42 @@
 
   <pre class="webhook-url"><code><%= receive_url %></code></pre>
 
+  <h2>Webhook secret</h2>
+
+  <% if webhook_secret %>
+    <p>
+      GitHub signs every delivery with this secret, and Twist rejects any push
+      that is not signed with it. Paste it into the webhook's
+      <strong>Secret</strong> field in GitHub.
+    </p>
+
+    <pre class="webhook-secret"><code><%= webhook_secret %></code></pre>
+
+    <div class="webhook-secret-actions">
+      <%= form_for :webhook_secret, book_webhook_secret_path(book), method: :post, class: "inline-block" do |f| %>
+        <%= f.submit "Generate a new secret", class: "btn btn-sm btn-outline" %>
+      <% end %>
+
+      <span class="webhook-muted">
+        Generating a new one takes effect immediately, so update GitHub at the
+        same time or pushes will start being rejected.
+      </span>
+    </div>
+  <% else %>
+    <p class="webhook-unsigned">
+      This book has no webhook secret, so Twist accepts unsigned deliveries:
+      anyone who knows the URL above can ask for a rebuild. Generate a secret to
+      start enforcing signatures &mdash; from then on, only deliveries GitHub has
+      signed with it are accepted.
+    </p>
+
+    <div class="webhook-secret-actions">
+      <%= form_for :webhook_secret, book_webhook_secret_path(book), method: :post, class: "inline-block" do |f| %>
+        <%= f.submit "Generate a secret", class: "btn btn-sm btn-blue" %>
+      <% end %>
+    </div>
+  <% end %>
+
   <h2>Setting it up on GitHub</h2>
 
   <ol class="webhook-steps">
@@ -32,9 +68,17 @@
       <code>application/json</code> will not work.
     </li>
     <li>
-      Leave <strong>Secret</strong> empty &mdash; Twist does not verify webhook
-      signatures yet, so anyone who knows this URL can ask for a rebuild.
-      Nothing but a rebuild can be triggered through it.
+      <% if webhook_secret %>
+        Paste the secret above into <strong>Secret</strong>. GitHub then signs
+        each delivery with it (an <code>X-Hub-Signature-256</code> header over
+        the request body), and Twist rejects deliveries whose signature is
+        missing or does not match.
+      <% else %>
+        Leave <strong>Secret</strong> empty for now. Twist accepts unsigned
+        deliveries while this book has no secret, which means anyone who knows
+        this URL can ask for a rebuild &mdash; generate a secret above, then put
+        it in this field, to close that off.
+      <% end %>
     </li>
     <li>
       Under <strong>Which events</strong>, choose
