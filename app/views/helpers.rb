@@ -10,6 +10,7 @@ module Twist
       include RoutingHelpers
       include NoteHelpers
       include ChapterHelpers
+      include WebhookHelpers
     end
   end
 end

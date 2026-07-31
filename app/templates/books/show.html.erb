@@ -13,6 +13,11 @@
       <i class="fa-regular fa-user"></i>
       People &amp; invites
     <% end %>
+
+    <%= link_to book_webhooks_path(book), class: "notes-pill" do %>
+      <i class="fa-solid fa-arrows-rotate"></i>
+      Webhooks
+    <% end %>
   <% end %>
 
   <% if chapter_sections.any? %>

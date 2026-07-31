@@ -1,0 +1,117 @@
+<div class="reading-column-wide">
+  <header class="mb-4">
+    <h1>
+      <%= link_to book_path(book) do %>
+        <%= book.title %>
+      <% end %>
+    </h1>
+    <p class="webhooks-subtitle">
+      Twist rebuilds this book when GitHub tells it the repository has changed.
+      Point a webhook at the URL below to turn that on.
+    </p>
+  </header>
+
+  <h2>Webhook URL</h2>
+
+  <pre class="webhook-url"><code><%= receive_url %></code></pre>
+
+  <h2>Setting it up on GitHub</h2>
+
+  <ol class="webhook-steps">
+    <li>
+      Open the book's repository on GitHub, then go to
+      <strong>Settings &rarr; Webhooks &rarr; Add webhook</strong>.
+    </li>
+    <li>
+      Paste the URL above into <strong>Payload URL</strong>.
+    </li>
+    <li>
+      Set <strong>Content type</strong> to
+      <code>application/x-www-form-urlencoded</code>. Twist reads the push
+      payload from the form's <code>payload</code> field, so
+      <code>application/json</code> will not work.
+    </li>
+    <li>
+      Leave <strong>Secret</strong> empty &mdash; Twist does not verify webhook
+      signatures yet, so anyone who knows this URL can ask for a rebuild.
+      Nothing but a rebuild can be triggered through it.
+    </li>
+    <li>
+      Under <strong>Which events</strong>, choose
+      <strong>Just the push event</strong>.
+    </li>
+    <li>
+      Keep <strong>Active</strong> ticked and save.
+    </li>
+  </ol>
+
+  <p>
+    Every push then arrives here, is recorded in the table below, and queues a
+    background job that clones the repository at that commit and reprocesses the
+    book's chapters. Pushing to a branch Twist has not seen before creates that
+    branch.
+  </p>
+
+  <h2>Recently received</h2>
+
+  <% if webhooks.any? %>
+    <div class="webhook-table-scroll">
+      <table class="webhook-table">
+        <thead>
+          <tr>
+            <th>Received</th>
+            <th>Event</th>
+            <th>Branch</th>
+            <th>Delivery</th>
+            <th>Job</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% webhooks.each do |webhook| %>
+            <tr>
+              <td>
+                <time datetime="<%= webhook.received_at.utc.iso8601 %>" title="<%= webhook.received_at.utc.strftime("%e %B %Y, %H:%M UTC") %>">
+                  <%= distance_of_time_in_words Time.now.utc, webhook.received_at.utc, highest_measure_only: true %> ago
+                </time>
+              </td>
+              <td><%= webhook.event || "push" %></td>
+              <td>
+                <span title="<%= webhook.ref %>"><%= webhook_branch(webhook) %></span>
+              </td>
+              <td>
+                <% if webhook.delivery_id %>
+                  <code class="webhook-delivery" title="<%= webhook.delivery_id %>"><%= webhook.delivery_id[0, 8] %></code>
+                <% else %>
+                  <span class="webhook-muted">&mdash;</span>
+                <% end %>
+              </td>
+              <td>
+                <span class="<%= webhook_status_class(webhook) %>"><%= webhook_status_label(webhook) %></span>
+
+                <% if webhook_job_duration(webhook) %>
+                  <span class="webhook-muted">in <%= webhook_job_duration(webhook) %></span>
+                <% end %>
+
+                <% if webhook.job_id %>
+                  <div class="webhook-muted">job <code><%= webhook.job_id %></code></div>
+                <% end %>
+
+                <% if webhook.job_error %>
+                  <div class="webhook-error"><%= webhook.job_error %></div>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <p>
+      <em class="text-gray-600">
+        No webhooks have been received for this book yet. Push to the repository,
+        or use <strong>Redeliver</strong> on an existing delivery in GitHub, and
+        it will show up here.
+      </em>
+    </p>
+  <% end %>
+</div>

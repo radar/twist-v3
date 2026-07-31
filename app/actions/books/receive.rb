@@ -42,7 +42,9 @@ module Twist
 
           result = receive_book.(
             permalink: request.params[:permalink],
-            branch_name: payload["ref"]
+            branch_name: payload["ref"],
+            event: request.env["HTTP_X_GITHUB_EVENT"],
+            delivery_id: request.env["HTTP_X_GITHUB_DELIVERY"]
           )
 
           case result

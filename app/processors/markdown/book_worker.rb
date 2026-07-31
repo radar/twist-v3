@@ -10,13 +10,24 @@ module Twist
         include Deps["repos.book_repo"]
         include Deps["repos.branch_repo"]
         include Deps["repos.commit_repo"]
+        include Deps["repos.webhook_repo"]
+        include Twist::Processors::WebhookTracking
+
+        def perform(payload)
+          track_webhook(payload["webhook_id"]) do
+            process(payload)
+          end
+        end
+
+        private
 
         # rubocop:disable Metrics/MethodLength
-        def perform(permalink)
+        def process(payload)
+          permalink = payload["permalink"]
           book = book_repo.find_by_permalink(permalink)
           book_updater = BookUpdater.new(
             permalink: permalink,
-            branch: "master",
+            branch: payload["branch"] || "master",
             username: book.github_user,
             repo: book.github_repo,
           )
@@ -31,8 +42,6 @@ module Twist
           end
         end
         # rubocop:enable Metrics/MethodLength
-
-        private
 
         def find_book(permalink)
           book = book_repo.find_by_permalink(permalink)
