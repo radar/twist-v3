@@ -33,12 +33,15 @@ module Twist
           end
         end
 
+        # Per-chapter badges only make sense for the current commit's chapters.
         expose :open_note_counts do |commit|
           note_repo.open_counts_by_chapter(commit)
         end
 
-        expose :open_note_count do |open_note_counts|
-          open_note_counts.values.sum
+        # The pill links to every open note on the book, including ones left
+        # against earlier commits, so it can't be summed from the per-chapter counts.
+        expose :open_note_count do |book|
+          note_repo.open_count_by_book(book)
         end
       end
     end

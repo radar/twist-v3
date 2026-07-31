@@ -101,6 +101,15 @@ RSpec.describe "Book notes", :db, type: :request do
       expect(last_response.body).to include("notes-tab-count\">1")
     end
 
+    it "counts every open note on the book pill, not just the latest commit's" do
+      get "/books/#{book.permalink}"
+
+      expect(last_response).to be_successful
+      expect(last_response.body).to include("notes-pill-count\">3")
+      # The per-chapter badge stays scoped to the latest commit's one open note.
+      expect(last_response.body).to include("chapter-row-notes")
+    end
+
     it "links a superseded element back to its own commit" do
       get "/books/#{book.permalink}/notes"
 
