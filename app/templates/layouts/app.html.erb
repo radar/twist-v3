@@ -38,12 +38,9 @@
     </header>
 
     <div class="site-main">
-      <% if flash[:success] %>
-        <div class="alert alert-success" role="status"><%= flash[:success] %></div>
-      <% end %>
-      <% if flash[:error] %>
-        <div class="alert alert-error" role="alert"><%= flash[:error] %></div>
-      <% end %>
+      <%# Turbo throws everything outside the target frame away, so views that
+          answer a frame request render this inside the frame instead. %>
+      <%= render "shared/flash" unless turbo_frame_request? %>
 
       <%= yield %>
     </div>

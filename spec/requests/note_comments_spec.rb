@@ -93,10 +93,47 @@ RSpec.describe "Note comments", :db, type: :request do
       expect(last_response.body).to include(%(action="#{comments_path}"))
     end
 
-    it "breaks out of the notes frame so the redirect always has somewhere to land" do
+    it "keeps the reply form inside the notes frame" do
       get element_path
 
-      expect(last_response.body).to include(%(data-turbo-frame="_top"))
+      expect(last_response.body).to include(%(action="#{comments_path}"))
+      expect(last_response.body).to_not include(%(data-turbo-frame="_top" class="note-comment-form"))
+      expect(last_response.body).to_not include(%(class="note-comment-form" data-turbo-frame="_top"))
+    end
+
+    # Replying from a chapter posts from inside `element_notes_<id>`, so Turbo
+    # follows the redirect with that frame's name and swaps only the frame. The
+    # comment has to come back in that fragment, or the reader loses their place.
+    it "returns the new comment inside the notes frame Turbo asked for" do
+      post comments_path, comment: {text: "I ran into this too"}
+
+      get element_path, {}, {"HTTP_TURBO_FRAME" => "element_notes_#{element.id}"}
+
+      expect(last_response).to be_successful
+      expect(last_response.body).to include(%(<turbo-frame id="element_notes_#{element.id}"))
+      frame = last_response.body[/<turbo-frame id="element_notes_#{element.id}".*?<\/turbo-frame>/m]
+      expect(frame).to include("I ran into this too")
+      expect(frame).to include("Comment added successfully.")
+    end
+
+    it "surfaces a blank-comment error inside the notes frame" do
+      post comments_path, comment: {text: "   "}
+
+      get element_path, {}, {"HTTP_TURBO_FRAME" => "element_notes_#{element.id}"}
+
+      frame = last_response.body[/<turbo-frame id="element_notes_#{element.id}".*?<\/turbo-frame>/m]
+      expect(frame).to include("Your comment needs some text before it can be saved.")
+    end
+
+    it "still shows the flash outside the frame on a full page load" do
+      post comments_path, comment: {text: "I ran into this too"}
+
+      get element_path
+
+      body = last_response.body
+      frame = body[/<turbo-frame id="element_notes_#{element.id}".*?<\/turbo-frame>/m]
+      expect(body).to include("Comment added successfully.")
+      expect(frame).to_not include("Comment added successfully.")
     end
 
     it "posts a comment and sees it rendered on the note" do

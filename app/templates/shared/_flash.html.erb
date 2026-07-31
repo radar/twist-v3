@@ -1,0 +1,6 @@
+<% if flash[:success] %>
+  <div class="alert alert-success" role="status"><%= flash[:success] %></div>
+<% end %>
+<% if flash[:error] %>
+  <div class="alert alert-error" role="alert"><%= flash[:error] %></div>
+<% end %>

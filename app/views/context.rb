@@ -26,6 +26,15 @@ module Twist
         nil
       end
 
+      # True when Turbo is asking for a single frame rather than a whole page. The
+      # response still renders the layout, but Turbo keeps only the matching frame,
+      # so anything the reader has to see (the flash) belongs inside it.
+      def turbo_frame_request?
+        !request.env["HTTP_TURBO_FRAME"].nil?
+      rescue StandardError
+        false
+      end
+
       def author_of?(book)
         return false unless current_user
 

@@ -13,6 +13,8 @@
   <%= render "elements/element", book: book, chapter: chapter, element: element %>
 
   <turbo-frame id="element_notes_<%= element.id %>" class="element-notes">
+    <%= render "shared/flash" if turbo_frame_request? %>
+
     <h3>
       <%= element.pretty_note_count %>
     </h3>
