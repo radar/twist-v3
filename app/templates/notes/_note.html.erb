@@ -56,7 +56,7 @@
             data: { turbo_frame: "_top" } do |f| %>
         <div>
           <%# A page can carry many of these forms, so the ids are per note. %>
-          <%= f.label for: "text-#{note.id}" do %>
+          <%= f.label for: "comment-text-#{note.id}" do %>
             Reply to this note (Markdown enabled)
           <% end %>
           <%= f.text_area :text, class: "form-textarea", id: "comment-text-#{note.id}" %>
