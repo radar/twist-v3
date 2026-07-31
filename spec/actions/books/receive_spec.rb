@@ -3,7 +3,17 @@ require "spec_helper"
 
 RSpec.describe Twist::Actions::Books::Receive do
   subject do
-    described_class.new(receive_book: receive_book)
+    described_class.new(receive_book: receive_book, find_book: find_book)
+  end
+
+  let(:book) { double(Twist::Structs::Book, permalink: "exploding-rails") }
+
+  let(:find_book) do
+    ->(permalink:) { Success(book) }
+  end
+
+  let(:receive_book) do
+    ->(permalink:, branch_name:) { Success(true) }
   end
 
   let(:params) do
@@ -19,10 +29,6 @@ RSpec.describe Twist::Actions::Books::Receive do
   end
 
   context "when the book exists" do
-    let(:receive_book) do
-      ->(permalink:, branch_name:) { Success(true) }
-    end
-
     it "hands the book off to the receive operation" do
       expect(receive_book).to receive(:call)
         .with(permalink: "exploding-rails", branch_name: "refs/heads/master")
@@ -42,6 +48,42 @@ RSpec.describe Twist::Actions::Books::Receive do
       status, _, body = subject.(params)
       expect(status).to eq(404)
       expect(JSON.parse(body.first)).to eq("error" => "Book not found")
+    end
+  end
+
+  context "when GitHub sends a ping" do
+    let(:ping_params) do
+      {
+        permalink: "exploding-rails",
+        "HTTP_X_GITHUB_EVENT" => "ping",
+        payload: {
+          zen: "Avoid administrative distraction.",
+          hook_id: 659323745,
+          repository: {
+            full_name: "radar/exploding_rails",
+          },
+        }.to_json
+      }
+    end
+
+    it "responds with a pong without processing the book" do
+      expect(receive_book).to_not receive(:call)
+
+      status, _, body = subject.(ping_params)
+      expect(status).to eq(200)
+      expect(JSON.parse(body.first)).to eq("message" => "pong")
+    end
+
+    context "when the book cannot be found" do
+      let(:find_book) do
+        ->(permalink:) { Failure(:book_not_found) }
+      end
+
+      it "reports back the book cannot be found" do
+        status, _, body = subject.(ping_params)
+        expect(status).to eq(404)
+        expect(JSON.parse(body.first)).to eq("error" => "Book not found")
+      end
     end
   end
 end
