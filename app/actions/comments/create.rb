@@ -19,6 +19,8 @@ module Twist
           # dry-schema coerce the id out of the URL string before checking it.
           required(:id).filled(:integer)
 
+          optional(:return_to).filled(:str?)
+
           required(:comment).schema do
             required(:text).filled(:str?)
           end
@@ -49,7 +51,7 @@ module Twist
 
           if text.empty?
             request.flash[:error] = "Your comment needs some text before it can be saved."
-            response.redirect_to(element_path(request), status: 303)
+            response.redirect_to(return_path(request, fallback: element_path(request)), status: 303)
             return
           end
 
@@ -71,7 +73,7 @@ module Twist
 
           request.flash[:success] = "Comment added successfully."
 
-          response.redirect_to(element_path(request), status: 303)
+          response.redirect_to(return_path(request, fallback: element_path(request)), status: 303)
         end
 
         private

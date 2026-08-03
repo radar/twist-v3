@@ -20,15 +20,14 @@ module Twist
 
           request.flash[:success] = "Note re-opened successfully."
 
-          response.redirect_to(
-            routes.path(
-              :element,
-              book_permalink: request.params[:book_permalink],
-              chapter_permalink: request.params[:chapter_permalink],
-              id: request.params[:element_id]
-            ),
-            status: 303
+          element_path = routes.path(
+            :element,
+            book_permalink: request.params[:book_permalink],
+            chapter_permalink: request.params[:chapter_permalink],
+            id: request.params[:element_id]
           )
+
+          response.redirect_to(return_path(request, fallback: element_path), status: 303)
         end
       end
     end

@@ -37,6 +37,27 @@ RSpec.describe Twist::Actions::Notes::Close do
 
       # 303 so Turbo re-issues the follow-up request as a GET
       expect(response.status).to eq(303)
+      expect(response.headers["Location"]).to eq(
+        "/books/book-permalink/chapters/chapter-permalink/elements/2"
+      )
+    end
+
+    it "returns to the page the form came from" do
+      allow(note_repo).to receive(:close!)
+
+      response = subject.call(env.merge(return_to: "/books/book-permalink/notes"))
+
+      expect(response.headers["Location"]).to eq("/books/book-permalink/notes")
+    end
+
+    it "ignores a return_to pointing off-site" do
+      allow(note_repo).to receive(:close!)
+
+      response = subject.call(env.merge(return_to: "//evil.example.com"))
+
+      expect(response.headers["Location"]).to eq(
+        "/books/book-permalink/chapters/chapter-permalink/elements/2"
+      )
     end
   end
 

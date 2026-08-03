@@ -166,4 +166,52 @@ RSpec.describe "Book notes", :db, type: :request do
       expect(last_response.body).not_to include("Fixed in review")
     end
   end
+
+  describe "closing and re-opening from the notes list" do
+    let(:notes_path) { "/books/#{book.permalink}/notes" }
+
+    def note_path(note, action)
+      "/books/#{book.permalink}/chapters/#{chapter.permalink}" \
+        "/elements/#{element.id}/notes/#{note.id}/#{action}"
+    end
+
+    let(:open_note) { note_repo.open_by_book(book).first }
+    let(:closed_note) { note_repo.closed_by_book(book).first }
+
+    it "carries the list back in the close form" do
+      get notes_path
+
+      expect(last_response.body).to include(%(name="return_to" value="#{notes_path}"))
+    end
+
+    it "carries the tab's status back in the re-open form" do
+      get "#{notes_path}?status=closed"
+
+      expect(last_response.body).to include(
+        %(name="return_to" value="#{notes_path}?status=closed")
+      )
+    end
+
+    it "returns to the list after closing a note" do
+      patch note_path(open_note, "close"), return_to: notes_path
+
+      expect(last_response.status).to eq(303)
+      expect(last_response.headers["Location"]).to eq(notes_path)
+    end
+
+    it "returns to the closed tab after re-opening a note" do
+      patch note_path(closed_note, "open"), return_to: "#{notes_path}?status=closed"
+
+      expect(last_response.status).to eq(303)
+      expect(last_response.headers["Location"]).to eq("#{notes_path}?status=closed")
+    end
+
+    it "still lands on the element page when no return_to is sent" do
+      patch note_path(open_note, "close")
+
+      expect(last_response.headers["Location"]).to eq(
+        "/books/#{book.permalink}/chapters/#{chapter.permalink}/elements/#{element.id}"
+      )
+    end
+  end
 end

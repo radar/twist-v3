@@ -38,12 +38,14 @@
         </div>
 
         <div class="open-note-body">
+          <%# return_to matches the tab links: only the closed tab carries a status. %>
           <%= render "notes/note",
             note: note,
             book: book,
             book_permalink: book.permalink,
             chapter_permalink: chapter.permalink,
-            element_id: element.id
+            element_id: element.id,
+            return_to: book_notes_path(book, status: ("closed" if status == "closed"))
           %>
         </div>
       </div>

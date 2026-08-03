@@ -1,3 +1,9 @@
+<%#
+  return_to keeps the note's forms on the page they were submitted from. Without
+  it every one of them lands on the element's own page, which is right from a
+  chapter but throws the reader off the book's notes list.
+%>
+<% return_path = defined?(return_to) ? return_to : nil %>
 <div class="note">
   <div class="note-avatar">
     <%= gravatar_for note.user.email %>
@@ -22,10 +28,16 @@
         <% if author_of?(book) %>
           <% if note.open? %>
             <%= form_for :note, close_note_path(note), method: :patch, class: "inline-block" do |f| %>
+              <% if return_path %>
+                <input type="hidden" name="return_to" value="<%= return_path %>" />
+              <% end %>
               <%= f.submit "Close", class: "note-action-button" %>
             <% end %>
           <% else %>
             <%= form_for :note, open_note_path(note), method: :patch, class: "inline-block" do |f| %>
+              <% if return_path %>
+                <input type="hidden" name="return_to" value="<%= return_path %>" />
+              <% end %>
               <%= f.submit "Re-open", class: "note-action-button" %>
             <% end %>
           <% end %>
@@ -53,6 +65,9 @@
           navigating off to the element's own page and losing the reader's place. %>
       <%= form_for :comment, create_note_comment_path(note),
             class: "note-comment-form" do |f| %>
+        <% if return_path %>
+          <input type="hidden" name="return_to" value="<%= return_path %>" />
+        <% end %>
         <div>
           <%# A page can carry many of these forms, so the ids are per note. %>
           <%= f.label for: "comment-text-#{note.id}" do %>

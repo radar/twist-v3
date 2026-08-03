@@ -150,6 +150,15 @@ RSpec.describe "Note comments", :db, type: :request do
       expect(last_response.body).to include("Reader")
     end
 
+    it "stays on the book-wide notes page when the reply came from there" do
+      notes_path = "/books/#{book.permalink}/notes"
+
+      post comments_path, comment: {text: "I ran into this too"}, return_to: notes_path
+
+      expect(last_response.status).to eq(303)
+      expect(last_response.headers["Location"]).to eq(notes_path)
+    end
+
     it "shows the comment on the book-wide notes page as well" do
       post comments_path, comment: {text: "I ran into this too"}
 
