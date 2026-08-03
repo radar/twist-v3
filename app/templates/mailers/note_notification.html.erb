@@ -1,0 +1,14 @@
+<p>Hello <%= recipient.name %>,</p>
+
+<p>
+  <%= author.name %> left note #<%= note.number %> on
+  <strong><%= chapter.title %></strong> in <%= book.title %>.
+</p>
+
+<blockquote>
+  <%= note.text %>
+</blockquote>
+
+<p>
+  <a href="<%= note_url %>">Read the note in context</a>
+</p>

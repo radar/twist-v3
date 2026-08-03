@@ -4,7 +4,8 @@
   chapter but throws the reader off the book's notes list.
 %>
 <% return_path = defined?(return_to) ? return_to : nil %>
-<div class="note">
+<%# Notification emails link straight at a note, so it needs an anchor. %>
+<div class="note" id="note-<%= note.id %>">
   <div class="note-avatar">
     <%= gravatar_for note.user.email %>
   </div>

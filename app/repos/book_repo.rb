@@ -12,6 +12,10 @@ module Twist
         books.to_a
       end
 
+      def by_id(id)
+        books.by_pk(id).one
+      end
+
       def find_by_permalink(permalink)
         require_permalink!(permalink)
         books.where(permalink: permalink).one!
@@ -92,6 +96,15 @@ module Twist
           .join(:permissions, user_id: :id)
           .where(permissions[:book_id] => book.id)
           .select_append(permissions[:author])
+          .order(:name)
+          .to_a
+      end
+
+      # Everyone who can act on a note: the people notifications go to.
+      def authors_for(book)
+        users
+          .join(:permissions, user_id: :id)
+          .where(permissions[:book_id] => book.id, permissions[:author] => true)
           .order(:name)
           .to_a
       end

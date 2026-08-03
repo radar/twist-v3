@@ -65,11 +65,13 @@ module Twist
             return
           end
 
-          comment_repo.create(
+          comment = comment_repo.create(
             note_id: note.id,
             user_id: response[:current_user].id,
             text: text
           )
+
+          Twist::CommentNotificationWorker.perform_async(comment.id)
 
           request.flash[:success] = "Comment added successfully."
 

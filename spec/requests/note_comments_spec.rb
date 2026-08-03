@@ -150,6 +150,20 @@ RSpec.describe "Note comments", :db, type: :request do
       expect(last_response.body).to include("Reader")
     end
 
+    it "queues the notification email for the thread" do
+      post comments_path, comment: {text: "I ran into this too"}
+
+      comment = comments.where(note_id: note.id).first
+      expect(Twist::CommentNotificationWorker.jobs.map { |job| job["args"] })
+        .to eq([[comment[:id]]])
+    end
+
+    it "queues nothing when the comment was blank" do
+      post comments_path, comment: {text: "   "}
+
+      expect(Twist::CommentNotificationWorker.jobs).to be_empty
+    end
+
     it "stays on the book-wide notes page when the reply came from there" do
       notes_path = "/books/#{book.permalink}/notes"
 

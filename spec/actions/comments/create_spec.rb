@@ -50,13 +50,21 @@ RSpec.describe Twist::Actions::Comments::Create do
         note_id: 3,
         user_id: 1,
         text: "A reply"
-      )
+      ).and_return(double("Comment", id: 9))
 
       response = subject.call(env)
 
       # 303 so Turbo re-issues the follow-up request as a GET
       expect(response.status).to eq(303)
       expect(response.headers["Location"]).to eq(element_path)
+    end
+
+    it "queues the notification email for the new comment" do
+      allow(comment_repo).to receive(:create).and_return(double("Comment", id: 9))
+
+      subject.call(env)
+
+      expect(Twist::CommentNotificationWorker.jobs.map { |job| job["args"] }).to eq([[9]])
     end
   end
 

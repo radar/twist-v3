@@ -91,5 +91,15 @@ RSpec.describe "Inline notes", :db, type: :request do
         "/books/#{book.permalink}/chapters/#{chapter.permalink}/elements/#{element.id}"
       )
     end
+
+    it "queues the notification email for the book's authors" do
+      post(
+        "/books/#{book.permalink}/chapters/#{chapter.permalink}/elements/#{element.id}/notes",
+        note: {text: "A note"}
+      )
+
+      note = Hanami.app["relations.notes"].where(element_id: element.id).first
+      expect(Twist::NoteNotificationWorker.jobs.map { |job| job["args"] }).to eq([[note[:id]]])
+    end
   end
 end

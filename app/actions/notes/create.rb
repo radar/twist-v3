@@ -24,7 +24,7 @@ module Twist
         def handle(request, response)
           book = book_repo.find_by_permalink_with_latest_commit(request.params[:book_permalink])
           note_count = book_note_repo.count_for_book(book.id)
-          note_repo.create(
+          note = note_repo.create(
             request.params[:note].merge(
               number: note_count + 1,
               state: "open",
@@ -33,6 +33,8 @@ module Twist
               user_id: response[:current_user].id,
             )
           )
+
+          Twist::NoteNotificationWorker.perform_async(note.id)
 
           response.redirect_to(
             routes.path(:element,

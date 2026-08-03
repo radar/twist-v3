@@ -5,6 +5,12 @@ module Twist
     class NoteRepo < Twist::DB::Repo
       commands :create, use: :default_timestamps
 
+      # A note plus everything a notification email needs to describe and link
+      # to it. Returns nil when the note has since been deleted.
+      def find_with_context(id)
+        notes.by_pk(id).combine(:user, element: :chapter).one
+      end
+
       def by_element(element)
         notes.by_element(element.id).to_a
       end
